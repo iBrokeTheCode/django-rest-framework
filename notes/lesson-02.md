@@ -136,8 +136,6 @@
 
    - Navigate to `http://127.0.0.1:8000/products/` to see the list of products in the Browsable API or in JSON format (by adding `?format=json`).
 
-# Continue here
-
 9. **Define a view to retrieve a single product**:
 
    - Use the `@api_view(['GET'])` decorator.
@@ -146,27 +144,28 @@
    - Instantiate the serializer with the single product instance.
    - Return a `Response` object with the serialized data.
 
-   ```python
-   @api_view(['GET'])
-   def product_detail(request, pk):
-       product = get_object_or_404(Product, pk=pk)
-       serializer = ProductSerializer(product)
-       return Response(serializer.data)
-   ```
+     ```python
+     @api_view(['GET'])
+     def product_detail(request, pk):
+         product = get_object_or_404(Product, pk=pk)
+         serializer = ProductSerializer(product)
+
+         return Response(serializer.data)
+     ```
 
 10. **Define URLs in your app's `urls.py`**:
 
     - Create URL patterns to map URLs to your views.
 
-    ```python
-    from django.urls import path
-    from . import views
+      ```python
+      from django.urls import path
+      from . import views
 
-    urlpatterns = [
-        path('products/', views.product_list),
-        path('products/<int:pk>/', views.product_detail),
-    ]
-    ```
+      urlpatterns = [
+          path('', views.product_list, name='product_list'),
+          path('<int:pk>/', views.product_detail, name='list_detail')
+      ]
+      ```
 
 11. **Run the Django development server**:
 
