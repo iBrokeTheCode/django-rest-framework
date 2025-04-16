@@ -15,11 +15,11 @@
 
 1. **Install Django REST Framework**:
 
-   - Ensure `djangorestframework` is listed in your `requirements.txt` file and installed in your virtual environment.
+   Ensure `djangorestframework` is listed in your `requirements.txt` file and installed in your virtual environment.
 
 2. **Add REST Framework to installed apps**:
 
-   - Open your project's `settings.py` file and add `'rest_framework'` to the `INSTALLED_APPS` list.
+   Open your project's `settings.py` file and add `'rest_framework'` to the `INSTALLED_APPS` list.
 
    ```python
    INSTALLED_APPS = [
@@ -30,11 +30,11 @@
 
 3. **Create a `serializers.py` file in your Django app**:
 
-   - Inside your application directory (e.g., `api`), create a new file named `serializers.py`.
+   Inside your application directory (e.g., `api`), create a new file named `serializers.py`.
 
 4. **Import necessary modules in `serializers.py`**:
 
-   - Import `serializers` from `rest_framework` and the models you want to serialize.
+   Import `serializers` from `rest_framework` and the models you want to serialize.
 
    ```python
    from rest_framework import serializers
@@ -55,13 +55,11 @@
 
 6. **Implement field-level validation (optional)**:
 
-   - Add methods named `validate_<field_name>` to your serializer class to perform custom validation for specific fields.
+   Add methods named `validate_<field_name>` to your serializer class to perform custom validation for specific fields.
 
    ```python
    class ProductSerializer(serializers.ModelSerializer):
-       class Meta:
-           model = Product
-           fields = ('name', 'description', 'price', 'stock')
+        # ...
 
        def validate_price(self, value):
            if value <= 0:
@@ -69,9 +67,45 @@
            return value
    ```
 
-7. **Create a Django view (function-based example)**:
+7. **Create Django views and urls configuration**
 
-   - In your app's `views.py` file, import necessary modules, including the `Response` object and `@api_view` decorator from `rest_framework` and your serializer.
+   asdf
+
+   ```py
+   # api/views.py
+   from django.http import JsonResponse
+   from .models import Product
+   from .serializers import ProductSerializer
+
+
+   def list_products(request):
+       products = Product.objects.all()
+       serializer = ProductSerializer(products, many=True)
+
+       return JsonResponse(data={
+           'data': serializer.data
+       })
+
+   ```
+
+   ```py
+   # api/urls.py
+    urlpatterns = [
+        path('', views.list_products, name='list_products')
+    ]
+
+    # project/urls.py
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('products/', include('api.urls', namespace='api'))
+    ]
+   ```
+
+   Then run the server and go to `127.0.0.1:8000/products` to see the Response with all Products data.
+
+8. **Create a Django view (function-based example)**:
+
+   In your app's `views.py` file, import necessary modules, including the `Response` object and `@api_view` decorator from `rest_framework` and your serializer.
 
    ```python
    from django.shortcuts import get_object_or_404
@@ -81,7 +115,7 @@
    from .serializers import ProductSerializer
    ```
 
-8. **Define a view to list all products**:
+9. **Define a view to list all products**:
 
    - Use the `@api_view(['GET'])` decorator to allow only GET requests.
    - Fetch the queryset of products.
@@ -96,23 +130,23 @@
        return Response(serializer.data)
    ```
 
-9. **Define a view to retrieve a single product**:
+10. **Define a view to retrieve a single product**:
 
-   - Use the `@api_view(['GET'])` decorator.
-   - Accept a primary key (`pk`) as a parameter.
-   - Use `get_object_or_404` to retrieve a single product instance.
-   - Instantiate the serializer with the single product instance.
-   - Return a `Response` object with the serialized data.
+    - Use the `@api_view(['GET'])` decorator.
+    - Accept a primary key (`pk`) as a parameter.
+    - Use `get_object_or_404` to retrieve a single product instance.
+    - Instantiate the serializer with the single product instance.
+    - Return a `Response` object with the serialized data.
 
-   ```python
-   @api_view(['GET'])
-   def product_detail(request, pk):
-       product = get_object_or_404(Product, pk=pk)
-       serializer = ProductSerializer(product)
-       return Response(serializer.data)
-   ```
+    ```python
+    @api_view(['GET'])
+    def product_detail(request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    ```
 
-10. **Define URLs in your app's `urls.py`**:
+11. **Define URLs in your app's `urls.py`**:
 
     - Create URL patterns to map URLs to your views.
 
@@ -126,12 +160,12 @@
     ]
     ```
 
-11. **Run the Django development server**:
+12. **Run the Django development server**:
 
     ```bash
     python manage.py runserver
     ```
 
-12. **Access the API in your browser**:
+13. **Access the API in your browser**:
     - Navigate to `http://127.0.0.1:8000/products/` to see the list of products in the Browsable API or in JSON format (by adding `?format=json`).
     - Navigate to `http://127.0.0.1:8000/products/1/` (replace `1` with a product ID) to see the details of a single product.
