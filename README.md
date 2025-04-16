@@ -2,7 +2,7 @@
 
 ## Credits
 
-> [!INFO]
+> [!NOTE]
 > Material by [BugBytes Channel](https://www.youtube.com/@bugbytes3923) and [tutorial series](https://www.youtube.com/watch?v=6AEvlNgRPNc&list=PL-2EBeDYMIbTLulc9FSoAXhbmXpLq2l5t).
 > Notes generated with [NotebookLM](https://notebooklm.google)
 
