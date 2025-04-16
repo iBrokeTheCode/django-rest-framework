@@ -165,8 +165,10 @@ Here's a step-by-step guide to applying the concepts covered in this lesson:
     ```
 
 12. **Populate the Database:**
-    Run the custom management command (`populatedb`) provided in the starter code to add initial user, product, and order data to the database.
+    Run the custom management command (`api/management/commands/populate_db.py`) provided in the starter code to add initial user, product, and order data to the database.
 
     ```bash
-    python manage.py populatedb
+    python manage.py populate_db
     ```
+
+    Review this [resource](https://github.com/iBrokeTheCode/orm-deep-dive/blob/main/notes/lesson-06.md#create-custom-commands) for more details about Custom Commands.
