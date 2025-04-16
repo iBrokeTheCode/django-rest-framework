@@ -22,4 +22,4 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 
 1. [Django REST Framework series - Setup and Models](./notes/lesson-01.md)
 
-   This lesson is the first in a series focused on building APIs using **Django REST Framework**, the most popular Django package for this purpose. In this initial lesson, the primary focus is on setting up the project and defining the fundamental data models for an API centered around **products and orders**. The series aims to cover all the important concepts of Django REST Framework, starting from the ground up and building a functional API throughout.
+   In this initial lesson, the primary focus is on setting up the project and defining the fundamental data models for an API centered around **products and orders**. The series aims to cover all the important concepts of Django REST Framework, starting from the ground up and building a functional API throughout. Watch [tutorial](https://youtu.be/6AEvlNgRPNc?si=YBnUAiGHIXL3mndx)

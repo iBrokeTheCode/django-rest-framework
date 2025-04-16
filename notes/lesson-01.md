@@ -172,3 +172,11 @@ Here's a step-by-step guide to applying the concepts covered in this lesson:
     ```
 
     Review this [resource](https://github.com/iBrokeTheCode/orm-deep-dive/blob/main/notes/lesson-06.md#create-custom-commands) for more details about Custom Commands.
+
+13. **Generate ER Diagram**
+
+    ```shell
+    py manage.py graph_models api > models.dot
+    ```
+
+    Review this [resource](https://github.com/iBrokeTheCode/orm-deep-dive/blob/main/notes/lesson-20.md#generating-er-diagrams-with-django-extensions) or this [tutorial](https://youtu.be/qzrE7cfc_3Q?si=YqpPY33j0I0PyAj1) for more details about Generation of ER Diagrams. You can watch the generated ER diagram in this [site](https://dreampuf.github.io/GraphvizOnline/?engine=dot).
