@@ -31,35 +31,35 @@ Here's a step-by-step guide to applying the concepts covered in this lesson:
 
 1.  **Clone the Starter Code:**
 
-    - Action: Clone the starter code for the series from the GitHub repository mentioned in the video description.
+    Clone the starter code for the series from the GitHub [repository](https://github.com/bugbytes-io/drf-course-api).
 
 2.  **Create a Python Virtual Environment:**
 
-    - Action: Create an isolated environment for the project dependencies.
-    - Code:
-      ```bash
-      python -m venv venv-drf
-      ```
+    Create an isolated environment for the project dependencies.
+
+    ```bash
+    python -m venv venv-drf
+    ```
 
 3.  **Activate the Virtual Environment:**
 
-    - Action: Activate the newly created virtual environment.
-    - Code (example for Unix/macOS):
-      ```bash
-      source venv-drf/bin/activate
-      ```
-    - Code (example for Windows):
-      ```bash
-      .\venv-drf\Scripts\activate
-      ```
+    Activate the newly created virtual environment.
+
+    ```bash
+    # Linux and macOS
+    source venv-drf/bin/activate
+
+    # Windows
+    .\venv-drf\Scripts\activate
+    ```
 
 4.  **Install Requirements:**
 
-    - Action: Install the necessary packages listed in the `requirements.txt` file, including Django, Django REST Framework, Django Extensions, and Pillow.
-    - Code:
-      ```bash
-      pip install -r requirements.txt
-      ```
+    Install the necessary packages listed in the `requirements.txt` file, including Django, Django REST Framework, Django Extensions, and Pillow.
+
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 5.  **Define the Custom User Model (`api/models.py`):**
 
