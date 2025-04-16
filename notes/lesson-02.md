@@ -11,6 +11,13 @@
 - **Browsable API for development**: Django REST Framework automatically provides a **Browsable API** when using its `Response` object. This provides a user-friendly HTML representation of your API endpoints, making it easier to inspect requests and responses during development. You can explicitly request different formats like JSON by adding `format=json` to the URL.
 - **Renderers control output format**: **Renderers** are responsible for converting the response data into specific media types. Django REST Framework includes renderers for JSON and the Browsable API (HTML) by default.
 
+## 2. Resources
+
+- [Serializers](https://www.django-rest-framework.org/api-guide/serializers/)
+- [Serializer Fields](https://www.django-rest-framework.org/api-guide/fields/)
+- [DRF Response objects](https://www.django-rest-framework.org/api-guide/responses/)
+- [DRF Browsable API](https://www.django-rest-framework.org/topics/browsable-api/)
+
 ## 2. Practical Steps
 
 1. **Install Django REST Framework**:
@@ -50,7 +57,8 @@
    class ProductSerializer(serializers.ModelSerializer):
        class Meta:
            model = Product
-           fields = ('name', 'description', 'price', 'stock')
+           fields = ('id', 'name', 'description', 'price', 'stock')
+
    ```
 
 6. **Implement field-level validation (optional)**:
@@ -69,7 +77,7 @@
 
 7. **Create Django views and urls configuration**
 
-   asdf
+   Create a basic JSON Response with your Products data.
 
    ```py
    # api/views.py
@@ -105,48 +113,48 @@
 
 8. **Create a Django view (function-based example)**:
 
-   In your app's `views.py` file, import necessary modules, including the `Response` object and `@api_view` decorator from `rest_framework` and your serializer.
-
-   ```python
-   from django.shortcuts import get_object_or_404
-   from rest_framework.decorators import api_view
-   from rest_framework.response import Response
-   from .models import Product
-   from .serializers import ProductSerializer
-   ```
-
-9. **Define a view to list all products**:
-
+   - In your app's `views.py` file, import necessary modules, including the `Response` object and `@api_view` decorator from `rest_framework` and your serializer.
    - Use the `@api_view(['GET'])` decorator to allow only GET requests.
    - Fetch the queryset of products.
    - Instantiate the serializer with the queryset and `many=True`.
    - Return a `Response` object with the serialized data.
 
+     ```python
+     from rest_framework.response import Response
+     from rest_framework.decorators import api_view
+
+     from .models import Product
+     from .serializers import ProductSerializer
+
+     @api_view(['GET'])
+     def product_list(request):
+         products = Product.objects.all()
+         serializer = ProductSerializer(products, many=True)
+
+         return Response(serializer.data)
+     ```
+
+   - Navigate to `http://127.0.0.1:8000/products/` to see the list of products in the Browsable API or in JSON format (by adding `?format=json`).
+
+# Continue here
+
+9. **Define a view to retrieve a single product**:
+
+   - Use the `@api_view(['GET'])` decorator.
+   - Accept a primary key (`pk`) as a parameter.
+   - Use `get_object_or_404` to retrieve a single product instance.
+   - Instantiate the serializer with the single product instance.
+   - Return a `Response` object with the serialized data.
+
    ```python
    @api_view(['GET'])
-   def product_list(request):
-       products = Product.objects.all()
-       serializer = ProductSerializer(products, many=True)
+   def product_detail(request, pk):
+       product = get_object_or_404(Product, pk=pk)
+       serializer = ProductSerializer(product)
        return Response(serializer.data)
    ```
 
-10. **Define a view to retrieve a single product**:
-
-    - Use the `@api_view(['GET'])` decorator.
-    - Accept a primary key (`pk`) as a parameter.
-    - Use `get_object_or_404` to retrieve a single product instance.
-    - Instantiate the serializer with the single product instance.
-    - Return a `Response` object with the serialized data.
-
-    ```python
-    @api_view(['GET'])
-    def product_detail(request, pk):
-        product = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
-    ```
-
-11. **Define URLs in your app's `urls.py`**:
+10. **Define URLs in your app's `urls.py`**:
 
     - Create URL patterns to map URLs to your views.
 
@@ -160,12 +168,12 @@
     ]
     ```
 
-12. **Run the Django development server**:
+11. **Run the Django development server**:
 
     ```bash
     python manage.py runserver
     ```
 
-13. **Access the API in your browser**:
-    - Navigate to `http://127.0.0.1:8000/products/` to see the list of products in the Browsable API or in JSON format (by adding `?format=json`).
+12. **Access the API in your browser**:
+
     - Navigate to `http://127.0.0.1:8000/products/1/` (replace `1` with a product ID) to see the details of a single product.
