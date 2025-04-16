@@ -13,8 +13,7 @@ Generate a README file (Markdown format) summarizing the key concepts of the sou
 
 Introduction: A brief overview of the video's topic. (don't add numeration for this section)
 1. Core Concepts: Explain the main functionalities and principles discussed.
-2. Practical Steps: Provide a step-by-step guide for the practical application of the concepts in the video. For each step, clearly explain the action and include the corresponding code block (if any) directly after the step description.
-3. Resources: If mentioned, include links to relevant documentation or resources.
+2. Practical Steps: Provide a step-by-step guide for the practical application of the concepts in the video. For each step, clearly explain the action and include the corresponding code block (if any) directly after the step description. (not required to put "action" or "code" subtitle)
 
 Refer to the source as "lesson", for example: "In this lesson ..."
 ```
