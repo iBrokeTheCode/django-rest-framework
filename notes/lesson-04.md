@@ -12,76 +12,64 @@
 ## 2. Resources
 
 - [Serializers](https://www.django-rest-framework.org/api-guide/serializers/)
+- [Django Aggregation and Annotation](https://youtu.be/LEsmHKZLsBI?si=JliZ0CD5F_v2E-gj)
 
 ## 3. Practical Steps
 
 1.  **Define a generic serializer class:** Create a new serializer that inherits from `serializers.Serializer`. Define fields within this serializer to represent the data you want to return, including nested serializers for model data and standard serializer fields for aggregated values.
 
-    ```python
+    ```py
     from rest_framework import serializers
 
-    class ProductInfoSerializer(serializers.Serializer):
+    class ProductsInfoSerializer(serializers.Serializer):
         products = ProductSerializer(many=True)
         count = serializers.IntegerField()
         max_price = serializers.FloatField()
+        min_price = serializers.FloatField()
     ```
 
 2.  **Import necessary modules and classes:** Ensure you have imported the required classes from Django REST Framework (`serializers`, `APIView`) and Django ORM (`Max`).
 
-    ```python
+    ```py
     from rest_framework.decorators import api_view
     from rest_framework.response import Response
-    from rest_framework import serializers
-    from django.db.models import Max
-    # Assuming Product and ProductSerializer are defined elsewhere
-    # from .serializers import ProductSerializer
-    # from .models import Product
+    from django.db.models import Max, Min
     ```
 
-3.  **Create an `APIView` to handle the request:** Define a function-based view decorated with `@api_view(['GET'])` to handle incoming GET requests.
+3.  **Create an `APIView` to handle the request:**
 
-    ```python
+    - Define a function-based view decorated with `@api_view(['GET'])` to handle incoming GET requests. Then, fetch the data that you want to include in your API response. This might involve querying the database for model instances and performing aggregations.
+    - **Retrieve the necessary data:** Fetch the data that you want to include in your API response. This might involve querying the database for model instances and performing aggregations.
+    - **Instantiate the generic serializer with the data:** Create an instance of your custom serializer, passing the retrieved data as a dictionary using the field names defined in the serializer. The keys of the dictionary should match the field names in the serializer. For nested serializers, you can directly pass the queryset.
+    - **Return a `Response` with the serialized data:** Access the `.data` attribute of the serializer to get the serialized representation and return it within a Django REST Framework `Response` object.
+
+    ```py
     @api_view(['GET'])
-    def product_info(request):
-        # ... view logic ...
-        pass
+    def products_info(request):
+        products = Product.objects.all()
+
+        serializer = ProductsInfoSerializer({
+            'products': products,
+            'count': len(products),
+            'max_price': products.aggregate(max_price=Max('price'))['max_price'],
+            'min_price': products.aggregate(min_price=Min('price'))['min_price']
+        })
+
+        return Response(serializer.data)
     ```
 
-4.  **Retrieve the necessary data:** Fetch the data that you want to include in your API response. This might involve querying the database for model instances and performing aggregations.
-
-    ```python
-    products = Product.objects.all()
-    count = len(products)
-    max_price_data = Product.objects.aggregate(Max('price'))
-    max_price = max_price_data['price__max']
-    ```
-
-5.  **Instantiate the generic serializer with the data:** Create an instance of your custom serializer, passing the retrieved data as a dictionary using the field names defined in the serializer. The keys of the dictionary should match the field names in the serializer. For nested serializers, you can directly pass the queryset.
-
-    ```python
-    serializer = ProductInfoSerializer(data={
-        'products': products,
-        'count': count,
-        'max_price': max_price
-    })
-    ```
-
-6.  **Return a `Response` with the serialized data:** Access the `.data` attribute of the serializer to get the serialized representation and return it within a Django REST Framework `Response` object.
-
-    ```python
-    return Response(serializer.data)
-    ```
-
-7.  **Define a URL for the view:** In your `urls.py` file, create a URL pattern that maps to your `APIView`.
+4.  **Define a URL for the view:** In your `urls.py` file, create a URL pattern that maps to your `APIView`.
 
     ```python
     from django.urls import path
-    from . import views
+    from api import views
 
     urlpatterns = [
         # ... other URLs ...
-        path('products/info/', views.product_info, name='product_info'),
+        path('products/info/', views.products_info),
     ]
     ```
+
+    Finally, go to the `http://127.0.0.1:8000/products/info/` in your browser to see the result response.
 
 This process demonstrates how to create flexible API endpoints that return aggregated data using generic serializers in Django REST Framework, allowing you to present comprehensive information to your clients without being strictly tied to your database models.
