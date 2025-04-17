@@ -18,7 +18,7 @@
 - [DRF Response objects](https://www.django-rest-framework.org/api-guide/responses/)
 - [DRF Browsable API](https://www.django-rest-framework.org/topics/browsable-api/)
 
-## 2. Practical Steps
+## 3. Practical Steps
 
 1. **Install Django REST Framework**:
 

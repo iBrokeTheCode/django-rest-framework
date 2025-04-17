@@ -24,7 +24,13 @@
 
 - **Referring to Model Properties:** If your Django model has defined properties (using the `@property` decorator), you can directly include them as fields in your `ModelSerializer`'s `fields` list, even though they don't correspond to database columns.
 
-## 2. Practical Steps
+## 2. Resources
+
+- [Serializers](https://www.django-rest-framework.org/api-guide/serializers/)
+- [Serializer Relations](https://www.django-rest-framework.org/api-guide/relations/)
+- [SerializerMethodField](https://www.django-rest-framework.org/api-guide/fields/#serializermethodfield)
+
+## 3. Practical Steps
 
 **Step 1: Define Model Serializers.**
 
@@ -66,6 +72,8 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ('order_id', 'user', 'created_at',
                   'status', 'items')
 ```
+
+If you don't add the related field (items in this case), by default DRF return only the `pk` and not the rest of item information.
 
 **Step 3: Ensure `related_name` is Set in the Model.**
 
