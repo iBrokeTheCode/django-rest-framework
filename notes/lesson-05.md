@@ -55,13 +55,10 @@
   ```
 - **Access Silk Interface:** Open your web browser and navigate to the path you configured for Silk's URLs (e.g., `http://localhost:8000/silk/`). This will display the Django Silk interface, showing a summary of requests.
 
----
-
-### Continue Heres
-
 - **Inspect Requests:** Make requests to your API endpoints. In the Silk UI, you will see these requests listed. Clicking on a request will provide more detailed information, including the request and response headers and body.
 - **Analyze SQL Queries:** Within the details of a request in the Silk UI, navigate to the "SQL" tab. This will show all the database queries that were executed during that request, along with the SQL statements and the time taken for each.
 - **Identify the N+1 Problem:** Observe requests that perform a large number of similar database queries, especially when fetching related data. For example, in the lesson, the `/orders/` endpoint initially showed 19 queries, indicating a potential N+1 problem when retrieving order items for each order.
+
 - **Optimize using `prefetch_related`:** In your Django views, modify your queryset to use `prefetch_related()` to fetch related objects efficiently. For example, to prefetch the 'items' related to an 'Order' model:
 
   ```python
@@ -76,6 +73,7 @@
 
   ```python
   # Further optimization - prefetching 'items' and their related 'product'
+  # orders = Order.objects.prefetch_related('items', 'items__product')
   orders = Order.objects.prefetch_related('items__product')
   ```
 
