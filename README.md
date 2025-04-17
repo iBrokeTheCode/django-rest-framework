@@ -43,3 +43,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 6. [Django REST Framework - Generic Views | ListAPIView & RetrieveAPIView](./notes/lesson-06.md) | [Tutorial](https://youtu.be/vExjSChWPWg?si=fdIM8l1yAK_Fmtii)
 
    In this lesson, we explore the power of class-based generic views in DRF. Generic views in DRF offer a streamlined approach to building common API endpoints by abstracting common idioms and patterns in view development. This lesson focuses on read-only generic views, specifically `ListAPIView` and `RetrieveAPIView`, demonstrating how they simplify the process of creating API views that closely map to database models for common CRUD operations.
+
+7. [Django REST Framework - Dynamic Filtering | Overriding get_queryset() method](./notes/lesson-07.md) | [Tutorial](https://youtu.be/3Gi-w4Swge8?si=arj4kv2XprfTKHae)
+
+   In this lesson, we will explore how to dynamically filter data returned by Django REST Framework generic API views, specifically focusing on overriding the `get_queryset()` method. This technique allows you to customize the set of objects retrieved from the database based on dynamic information, such as the currently authenticated user.
