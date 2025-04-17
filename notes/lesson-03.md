@@ -131,10 +131,6 @@ urlpatterns = [
 ]
 ```
 
----
-
-### Continues here
-
 **Step 6: Implement `SerializerMethodField`.**
 
 Add a `serializers.SerializerMethodField()` to your serializer and define the corresponding `get_<field_name>` method.
@@ -143,61 +139,65 @@ Add a `serializers.SerializerMethodField()` to your serializer and define the co
 # serializers.py
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField()
+    total_price = serializers.SerializerMethodField() # Bu default looks for "get_<field_name>"
+    # total_price = serializers.SerializerMethodField(method_name='get_total_price') # Explicitly
 
-    def get_total_price(self, obj):
-        return sum(item.item_subtotal for item in obj.items.all())
+    def get_total_price(self, order):
+        return sum(item.item_subtotal for item in order.items.all())
 
     class Meta:
         model = Order
-        fields = ['id', 'timestamp', 'user', 'status', 'items', 'total_price']
+        fields = ('order_id', 'user', 'created_at',
+                  'status', 'items', 'total_price')
 ```
 
-**Step 7: Use `source` to Flatten Related Data.**
+**Step 7: Return Product details in Order serializer**
+
+Add a nested serializer inside the `OrderItemSerializer`
+
+```py
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = OrderItem
+        fields = ('product', 'quantity')
+```
+
+**Step 8: Use `source` to Flatten Related Data.**
 
 In a serializer, define a field and set its `source` attribute to access a field from a related model.
 
 ```python
 # serializers.py
 class OrderItemSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source='product.name', read_only=True)
-    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
+    product_name = serializers.CharField(source='product.name')
+    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2)
 
     class Meta:
         model = OrderItem
         fields = ['quantity', 'product_name', 'product_price'] # Removed 'product' foreign key
 ```
 
-Then, update the `OrderSerializer` to use this modified `OrderItemSerializer`.
-
-```python
-# serializers.py
-class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField()
-
-    def get_total_price(self, obj):
-        return sum(item.product.price * item.quantity for item in obj.items.all()) # Adjusted calculation
-
-    class Meta:
-        model = Order
-        fields = ['id', 'timestamp', 'user', 'status', 'items', 'total_price']
-```
-
-**Step 8: Refer to Model Properties in Serializer Fields.**
+**Step 9: Refer to Model Properties in Serializer Fields.**
 
 Directly add the name of a model property to the `fields` list in your `ModelSerializer`.
 
 ```python
 # serializers.py
 class OrderItemSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source='product.name', read_only=True)
-    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
-    item_subtotal = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True) # Referencing the property
+    product_name = serializers.CharField(source='product.name')
+    product_price = serializers.DecimalField(
+        source='product.price', max_digits=10, decimal_places=2)
 
     class Meta:
         model = OrderItem
-        fields = ['quantity', 'product_name', 'product_price', 'item_subtotal']
+        fields = (
+            'product_name',
+            'product_price',
+            'quantity',
+            'item_subtotal' # It's a property of OrderItem (Can call you directly)
+        )
 ```
 
-These steps demonstrate the fundamental techniques for working with nested serializers, `SerializerMethodField`, and accessing related data in Django REST Framework, as explained in this lesson. Remember to adjust the model and serializer definitions according to your specific application requirements.
+These steps demonstrate the fundamental techniques for working with nested serializers, `SerializerMethodField`, and accessing related data in Django REST Framework.
