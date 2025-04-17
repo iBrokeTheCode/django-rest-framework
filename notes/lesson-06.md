@@ -94,6 +94,21 @@
 
 5.  **(Optional) Customize `lookup_field`:** If you want to look up objects based on a field other than the primary key (default), you can set the `lookup_field` attribute in your view.
 
+    ```py
+    class ProductDetailAPIView(generics.RetrieveAPIView):
+        queryset = Product.objects.all()
+        serializer_class = ProductSerializer
+        lookup_field = 'name'
+    ```
+
+    And your `urls.py`:
+
+    ```py
+    path('products/<str:name>/', views.ProductDetailAPIView.as_view()),
+    ```
+
+    Now, you must access with the product's name and not the `pk`
+
 6.  **(Optional) Customize `lookup_url_kwarg`:** If the URL parameter name doesn't match the default `pk` (for primary key lookup) or your custom `lookup_field`, you can specify the URL keyword argument using the `lookup_url_kwarg` attribute. For example, if your URL pattern uses `product_id` but your `lookup_field` is still the default `pk`:
     ```python
     class ProductDetailAPIView(generics.RetrieveAPIView):

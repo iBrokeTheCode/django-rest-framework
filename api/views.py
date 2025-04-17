@@ -19,6 +19,7 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'product_id'
+    # lookup_field = 'name'
 
 
 @api_view(['GET'])
