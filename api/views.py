@@ -3,41 +3,33 @@ from django.db.models import Max, Min
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import generics
+
 
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
 
 
-@api_view(['GET'])
-def product_list(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-
-    return Response(serializer.data)
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
-@api_view(['GET'])
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    serializer = ProductSerializer(product)
-
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def order_list(request):
-    orders = Order.objects.prefetch_related('items__product')
-    serializer = OrderSerializer(orders, many=True)
-
-    return Response(serializer.data)
+class ProductDetailAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = 'product_id'
+    # lookup_field = 'name'
 
 
-@api_view(['GET'])
-def order_item_list(request):
-    order_items = OrderItem.objects.all()
-    serializer = OrderItemSerializer(order_items, many=True)
+class OrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
 
-    return Response(serializer.data)
+
+class OrderItemListAPIView(generics.ListAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
 
 
 @api_view(['GET'])

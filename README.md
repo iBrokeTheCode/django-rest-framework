@@ -39,3 +39,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 5. [django-silk for Profiling and Optimization with Django REST Framework](./notes/lesson-05.md) | [Tutorial](https://youtu.be/OG8alXR4bEs?si=zMjLTCjqt-fH4Oig)
 
    This lesson focuses on using the **Django Silk** package to profile and optimize Django REST Framework APIs, with a particular emphasis on optimizing database queries for better performance. The lesson demonstrates how to install and configure Django Silk, use it to inspect HTTP requests and their associated SQL queries, and identify and resolve database query performance issues like the N+1 problem using Django's `prefetch_related` feature.
+
+6. [Django REST Framework - Generic Views | ListAPIView & RetrieveAPIView](./notes/lesson-06.md) | [Tutorial](https://youtu.be/vExjSChWPWg?si=fdIM8l1yAK_Fmtii)
+
+   In this lesson, we explore the power of class-based generic views in DRF. Generic views in DRF offer a streamlined approach to building common API endpoints by abstracting common idioms and patterns in view development. This lesson focuses on read-only generic views, specifically `ListAPIView` and `RetrieveAPIView`, demonstrating how they simplify the process of creating API views that closely map to database models for common CRUD operations.
