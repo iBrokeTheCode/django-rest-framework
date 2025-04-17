@@ -135,6 +135,7 @@ from .models import Product
 from .serializers import ProductSerializer
 
 class ProductListAPIView(generics.ListAPIView):
+    # queryset = Product.objects.exclude(stock__gt=0)
     queryset = Product.objects.filter(stock__gt=0)
     serializer_class = ProductSerializer
 ```

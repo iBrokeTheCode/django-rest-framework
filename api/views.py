@@ -22,20 +22,14 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     # lookup_field = 'name'
 
 
-@api_view(['GET'])
-def order_list(request):
-    orders = Order.objects.prefetch_related('items__product')
-    serializer = OrderSerializer(orders, many=True)
-
-    return Response(serializer.data)
+class OrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
 
 
-@api_view(['GET'])
-def order_item_list(request):
-    order_items = OrderItem.objects.all()
-    serializer = OrderItemSerializer(order_items, many=True)
-
-    return Response(serializer.data)
+class OrderItemListAPIView(generics.ListAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
 
 
 @api_view(['GET'])
