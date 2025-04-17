@@ -37,3 +37,10 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('order_id', 'user', 'created_at',
                   'status', 'items', 'total_price')
+
+
+class ProductsInfoSerializer(serializers.Serializer):
+    products = ProductSerializer(many=True)
+    count = serializers.IntegerField()
+    max_price = serializers.FloatField()
+    min_price = serializers.FloatField()
