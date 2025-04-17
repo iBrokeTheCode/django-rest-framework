@@ -28,3 +28,11 @@ def order_list(request):
     serializer = OrderSerializer(orders, many=True)
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def order_item_list(request):
+    order_items = OrderItem.objects.all()
+    serializer = OrderItemSerializer(order_items, many=True)
+
+    return Response(serializer.data)

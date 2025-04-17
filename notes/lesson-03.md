@@ -38,12 +38,18 @@ from .models import Order, OrderItem, Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price']
+        fields = ('id', 'name', 'description', 'price', 'stock')
+
+    def validate_price(self, value: float) -> float:
+        if value <= 0:
+            raise serializers.ValidationError('Price must be greater than 0')
+
+        return value...
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product', 'quantity'] # Initially, just foreign key
+        fields = ('order', 'product', 'quantity')
 ```
 
 **Step 2: Implement Nested Serialization.**
@@ -53,11 +59,12 @@ In the parent serializer, add a field that is an instance of the related seriali
 ```python
 # serializers.py
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True) # Nested serializer for order items
+    items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'timestamp', 'user', 'status', 'items']
+        fields = ('order_id', 'user', 'created_at',
+                  'status', 'items')
 ```
 
 **Step 3: Ensure `related_name` is Set in the Model.**
@@ -69,33 +76,18 @@ In the related model's foreign key field, ensure the `related_name` attribute ma
 from django.db import models
 from django.contrib.auth.models import User
 
-class Product(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return self.name
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"Order #{self.id}"
-
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE) # Set related_name here
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='items') # set related_name here
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
     @property
     def item_subtotal(self):
-        return self.product.price * self.quantity
+        return self.quantity * self.product.price
 
-    def __str__(self):
-        return f"{self.quantity} x {self.product.name} in Order #{self.order.id}"
+    def __str__(self) -> str:
+        return f'{self.quantity} x {self.product.price} in Order {self.order.order_id}'
 ```
 
 **Step 4: Create a View to Return Serialized Data.**
@@ -113,6 +105,7 @@ from .serializers import OrderSerializer
 def order_list(request):
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
+
     return Response(serializer.data)
 ```
 
@@ -126,9 +119,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('orders/', views.order_list, name='order-list'),
+    path('orders/', views.order_list, name='order_list'),
 ]
 ```
+
+---
+
+### Continues here
 
 **Step 6: Implement `SerializerMethodField`.**
 

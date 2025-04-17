@@ -15,13 +15,16 @@ class ProductSerializer(serializers.ModelSerializer):
         return value
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ('order_id', 'user', 'created_at', 'status')
-
-
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ('user', 'product', 'quantity')
+        fields = ('order', 'product', 'quantity')
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ('order_id', 'user', 'created_at',
+                  'status', 'items')
