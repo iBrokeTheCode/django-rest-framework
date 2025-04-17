@@ -31,3 +31,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 3. [Django REST Framework- Nested Serializers, SerializerMethodField and Serializer Relations](./notes/lesson-03.md) | [Tutorial](https://youtu.be/KfSYadIFHgY?si=IlS4-iodg5ZRKQtL)
 
    In this lesson, we delve into techniques for serializing complex data structures involving related models in Django REST Framework. We will learn how to represent one-to-many relationships by embedding serialized data of related models within the parent object's representation. Additionally, we will explore how to add custom, read-only fields to our API responses using `SerializerMethodField` and examine different ways to represent foreign key relationships.
+
+4. [Django REST Framework - Serializer subclasses and Aggregated API data](./notes/lesson-04.md) | [Tutorial](https://youtu.be/_xbI0-mjtw4?si=wXfWJNA5QxNbh72c)
+
+   This lesson provides an overview of how to create generic serializers in Django REST Framework that are not tied to specific models. It demonstrates how to aggregate data from different sources (in this case, a database) and return it as a single JSON response to clients.
