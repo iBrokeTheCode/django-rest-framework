@@ -92,6 +92,10 @@
     ]
     ```
 
+---
+
+### Continues Here
+
 5.  **(Optional) Customize `lookup_field`:** If you want to look up objects based on a field other than the primary key (default), you can set the `lookup_field` attribute in your view. For example, to look up by a `product_id` field:
     ```python
     class ProductDetailAPIView(generics.RetrieveAPIView):
