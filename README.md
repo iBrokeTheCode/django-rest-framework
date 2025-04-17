@@ -35,3 +35,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 4. [Django REST Framework - Serializer subclasses and Aggregated API data](./notes/lesson-04.md) | [Tutorial](https://youtu.be/_xbI0-mjtw4?si=wXfWJNA5QxNbh72c)
 
    This lesson provides an overview of how to create generic serializers in Django REST Framework that are not tied to specific models. It demonstrates how to aggregate data from different sources (in this case, a database) and return it as a single JSON response to clients.
+
+5. [django-silk for Profiling and Optimization with Django REST Framework](./notes/lesson-05.md) | [Tutorial](https://youtu.be/OG8alXR4bEs?si=zMjLTCjqt-fH4Oig)
+
+   This lesson focuses on using the **Django Silk** package to profile and optimize Django REST Framework APIs, with a particular emphasis on optimizing database queries for better performance. The lesson demonstrates how to install and configure Django Silk, use it to inspect HTTP requests and their associated SQL queries, and identify and resolve database query performance issues like the N+1 problem using Django's `prefetch_related` feature.
