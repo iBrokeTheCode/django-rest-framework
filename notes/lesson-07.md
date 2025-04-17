@@ -10,7 +10,11 @@
 - **Filtering the Queryset:** By accessing the authenticated user, you can filter the base queryset (obtained using `super().get_queryset()`) to include only the objects associated with that user.
 - **Session-based Authentication:** The lesson demonstrates this concept using Django's built-in session-based authentication through the Django admin.
 
-## 2. Practical Steps
+## 2. Resources
+
+- [Generic View Methods](https://www.django-rest-framework.org/api-guide/generic-views/#methods)
+
+## 3. Practical Steps
 
 **Step 1: Register the Order Model with Django Admin.**
 
@@ -49,7 +53,7 @@ python manage.py runserver
 
 **Step 4: Log into the Django Admin and Add Orders for Different Users.**
 
-Log in using the created superuser and add some order entries. Notice that each order has a foreign key to a user. The lesson creates orders for a user named "John do" and the default "admin" user. The inlines feature allows adding order items directly when creating an order.
+Log in using the created superuser and add some order entries. Notice that each order has a foreign key to a user. The lesson creates orders for a user named "John Doe" and the default "admin" user. The inlines feature allows adding order items directly when creating an order.
 
 **Step 5: Create a New Generic API View to Filter Orders by User.**
 
@@ -62,19 +66,19 @@ from .models import Order
 from .serializers import OrderSerializer
 
 class UserOrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()  # Base queryset
 
     def get_queryset(self):
-        user = self.request.user
-        return self.queryset.filter(user=user)
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
 ```
 
-- **Action:** A new class `UserOrderListAPIView` is created, inheriting from `generics.ListAPIView`.
-- **Action:** It uses the same `OrderSerializer` and a base `queryset` of all `Order` objects.
-- **Action:** The `get_queryset()` method is overridden.
-- **Action:** Inside `get_queryset()`, the authenticated `user` is accessed using `self.request.user`.
-- **Action:** The base `queryset` is then filtered to return only `Order` objects where the `user` field matches the authenticated `user`.
+- A new class `UserOrderListAPIView` is created, inheriting from `generics.ListAPIView`.
+- It uses the same `OrderSerializer` and a base `queryset` of all `Order` objects.
+- The `get_queryset()` method is overridden.
+- Inside `get_queryset()`, the authenticated `user` is accessed using `self.request.user`.
+- The base `queryset` is then filtered to return only `Order` objects where the `user` field matches the authenticated `user`.
 
 **Step 6: Define a URL for the New API View.**
 
@@ -93,7 +97,7 @@ urlpatterns = [
 
 **Step 7: Test the New Endpoint.**
 
-Accessing the `/user-orders/` endpoint will now return only the orders associated with the currently logged-in user (authenticated through the Django admin session). The lesson demonstrates that logging in as "John do" shows only John's orders, and logging in as "admin" shows only admin's orders.
+Accessing the `/user-orders/` endpoint will now return only the orders associated with the currently logged-in user (authenticated through the Django admin session). The lesson demonstrates that logging in as "John Doe" shows only John's orders, and logging in as "admin" shows only admin's orders.
 
 **Step 8: Note on Authentication and Permissions.**
 
