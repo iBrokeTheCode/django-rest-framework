@@ -50,7 +50,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError('Price must be greater than 0')
 
-        return value...
+        return value
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -139,7 +139,7 @@ Add a `serializers.SerializerMethodField()` to your serializer and define the co
 # serializers.py
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField() # Bu default looks for "get_<field_name>"
+    total_price = serializers.SerializerMethodField() # By default looks for "get_<field_name>"
     # total_price = serializers.SerializerMethodField(method_name='get_total_price') # Explicitly
 
     def get_total_price(self, order):

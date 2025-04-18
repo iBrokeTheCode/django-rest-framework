@@ -121,10 +121,6 @@
     path('products/<int:product_id>/', views.ProductDetailAPIView.as_view()),
     ```
 
----
-
-### Continues Here
-
 ### Modifying the Base `Queryset`
 
 You can easily modify the base `queryset` in your generic view to filter the results. For example, to only return products with a stock value greater than zero:
