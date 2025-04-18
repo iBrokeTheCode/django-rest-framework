@@ -51,7 +51,14 @@ The **APIView class** in Django REST Framework is a subclass of Django's regular
     class ProductInfoAPIView(APIView):
         def get(self, request):
             products = Product.objects.all()
-            serializer = ProductInfoSerializer({'products': products, 'count': products.count(), 'max_price': products.aggregate(Max('price'))['price__max']})
+
+            serializer = ProductsInfoSerializer({
+                'products': products,
+                'count': len(products),
+                'max_price': products.aggregate(max_price=Max('price'))['max_price'],
+                'min_price': products.aggregate(min_price=Min('price'))['min_price']
+            })
+
             return Response(serializer.data)
     ```
 
@@ -62,7 +69,7 @@ The **APIView class** in Django REST Framework is a subclass of Django's regular
     from .views import ProductInfoAPIView
 
     urlpatterns = [
-        path('products/in/', ProductInfoAPIView.as_view()),
+        path('products/info/', views.ProductInfoAPIView.as_view()),
     ]
     ```
 
