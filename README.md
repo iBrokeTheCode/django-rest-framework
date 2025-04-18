@@ -55,3 +55,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 9. [Django REST Framework - APIView class](./notes/lesson-09.md) | [Tutorial](https://youtu.be/TVFCU0w65Ak?si=cp5gKS3_aph13EGH)
 
    This lesson introduces the **APIView class** in Django REST Framework and demonstrates how to extend it to create API views in your Django application. It shows how to replace a function-based view with an `APIView`-based class view.
+
+10. [Django REST Framework - Creating Data | ListCreateAPIView and Generic View Internals](./notes/lesson-10.md) | [Tutorial](https://youtu.be/Jh85U1nhMh8?si=Ea0hqVhwnC0oxbqe)
+
+In this lesson, we explore how to create data in a Django REST Framework application using generic views, specifically focusing on `CreateAPIView` and `ListCreateAPIView`. We'll also touch upon the underlying HTTP methods and the internal workings of these generic views.
