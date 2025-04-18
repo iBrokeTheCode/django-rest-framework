@@ -33,13 +33,18 @@
     from rest_framework import permissions
 
     class UserOrderListAPIView(generics.ListAPIView):
+        queryset = Order.objects.all()
         serializer_class = OrderSerializer
+        permission_classes = (permissions.IsAuthenticated, ) # Permissions added
 
         def get_queryset(self):
-            return Order.objects.filter(user=self.request.user)
-
-        permission_classes = [permissions.IsAuthenticated]
+            qs = super().get_queryset()
+            return qs.filter(user=self.request.user)
     ```
+
+---
+
+### Continues here
 
 3.  **Create a test case** in your `tests.py` file, inheriting from `django.test.TestCase`. Define a `setUp` method to create necessary test data, such as users and orders [5].
 
