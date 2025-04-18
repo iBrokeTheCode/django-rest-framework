@@ -42,10 +42,6 @@
             return qs.filter(user=self.request.user)
     ```
 
----
-
-### Continues here
-
 3.  **Create a test case** in your `tests.py` file, inheriting from `django.test.TestCase`. Define a `setUp` method to create necessary test data, such as users and orders [5].
 
     ```python
@@ -65,28 +61,32 @@
     ```
 
 4.  **Write a test function to verify access for an authenticated user.**
-    Log in a user using `self.client.force_login()`, reverse the URL of the protected endpoint using `reverse()`, send a GET request, and assert that the response status code is `HTTP_200_OK` (using `status` from `rest_framework`) and that the returned data contains only the orders associated with the logged-in user [4, 6, 7]. Ensure your URL pattern in `urls.py` has a `name` for `reverse()` to work [6].
+    Log in a user using `self.client.force_login()`, reverse the URL of the protected endpoint using `reverse()`, send a GET request, and assert that the response status code is `HTTP_200_OK` (using `status` from `rest_framework`) and that the returned data contains only the orders associated with the logged-in user. Ensure your URL pattern in `urls.py` has a `name` for `reverse()` to work.
 
     ```python
     from django.test import TestCase
     from django.urls import reverse
-    from rest_framework import status
+
     from api.models import User, Order
-    from rest_framework import status
 
     class UserOrderTestCase(TestCase):
         def setUp(self):
             # ... (setup code from previous step)
 
         def test_user_order_endpoint_retrieves_only_the_authenticated_user_orders(self):
-            logged_in_user = self.user1
-            self.client.force_login(logged_in_user)
-            url = reverse('user-orders')
-            response = self.client.get(url)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            user = User.objects.get(username='user2')
+            self.client.force_login(user)
+            response = self.client.get(reverse('api:user_orders'))
+
+            assert response.status_code == 200
+
             orders = response.json()
-            self.assertTrue(all(order['user'] == logged_in_user.id for order in orders))
+            self.assertTrue(all(order['user'] == user.pk for order in orders))
     ```
+
+---
+
+### Continues here
 
 5.  **Write a test function to verify denial of access for an unauthenticated user.**
     Send a GET request to the protected endpoint without logging in any user and assert that the response status code is `HTTP_403_FORBIDDEN` (using `status` from `rest_framework`) [3, 4].
