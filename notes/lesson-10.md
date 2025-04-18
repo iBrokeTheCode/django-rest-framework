@@ -51,6 +51,24 @@
 - **Testing the POST request:**
   Navigating to the browsable API endpoint (e.g., `/products/create/`) will show that only POST requests are allowed. An HTML form is provided to input data and send a POST request. Upon successful creation, a **201 Created** response with the new resource data is returned. The newly created data will also be visible in the list view endpoint (e.g., `/products/`).
 
+- **Overriding the `create` method for custom logic:**
+
+  ```python
+  from rest_framework import generics
+  from .models import Product
+  from .serializers import ProductSerializer
+
+  class ProductCreateAPIView(generics.CreateAPIView):
+      model = Product.objects.all()
+      serializer_class = ProductSerializer
+
+      def create(self, request, *args, **kwargs):
+          print(request.data)
+          return super().create(request, *args, **kwargs)
+  ```
+
+  This demonstrates how to override the `create` method in a `CreateAPIView` (or the `create` method inherited by `ListCreateAPIView`) to perform custom actions, such as printing the request data, before calling the parent class's `create` method to handle the actual object creation. The `request.data` attribute in Django REST Framework's request object contains the parsed data from the POST request.
+
 ---
 
 - **Introducing `ListCreateAPIView` for combined list and create functionality:**
@@ -79,24 +97,3 @@
   ```
 
   By associating the `/products/` URL with `ProductListCreateAPIView`, the endpoint now accepts both GET (for listing) and POST (for creating) requests. The browsable API at `/products/` will now display both the list of products and a form to send a POST request to create a new product.
-
-- **Overriding the `create` method for custom logic:**
-
-  ```python
-  from rest_framework import generics
-  from .models import Product
-  from .serializers import ProductSerializer
-  from rest_framework.response import Response
-  from rest_framework import status
-
-  class ProductCreateAPIView(generics.CreateAPIView):
-      queryset = Product.objects.all()
-      serializer_class = ProductSerializer
-      model = Product
-
-      def create(self, request, *args, **kwargs):
-          print(request.data)
-          return super().create(request, *args, **kwargs)
-  ```
-
-  This demonstrates how to override the `create` method in a `CreateAPIView` (or the `create` method inherited by `ListCreateAPIView`) to perform custom actions, such as printing the request data, before calling the parent class's `create` method to handle the actual object creation. The `request.data` attribute in Django REST Framework's request object contains the parsed data from the POST request.
