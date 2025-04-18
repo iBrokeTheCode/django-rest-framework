@@ -51,3 +51,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 8. [Django REST Framework - Permissions and Testing Permissions](./notes/lesson-08.md) | [Tutorial](https://youtu.be/rx5IV_4Iuog?si=WjcKg4NyyEMW4_aZ)
 
    This lesson introduces **permissions in Django REST Framework** and demonstrates how to create and apply them to generic view classes. It addresses the issue of unauthorized access to user-specific data and explains how permissions, in conjunction with authentication, control access to API endpoints. The lesson also covers how to write tests to ensure that permissions are enforced correctly.
+
+9. [Django REST Framework - APIView class](./notes/lesson-09.md) | [Tutorial](https://youtu.be/TVFCU0w65Ak?si=cp5gKS3_aph13EGH)
+
+   This lesson introduces the **APIView class** in Django REST Framework and demonstrates how to extend it to create API views in your Django application. It shows how to replace a function-based view with an `APIView`-based class view.
