@@ -69,8 +69,6 @@
 
   This demonstrates how to override the `create` method in a `CreateAPIView` (or the `create` method inherited by `ListCreateAPIView`) to perform custom actions, such as printing the request data, before calling the parent class's `create` method to handle the actual object creation. The `request.data` attribute in Django REST Framework's request object contains the parsed data from the POST request.
 
----
-
 - **Introducing `ListCreateAPIView` for combined list and create functionality:**
 
   ```python
