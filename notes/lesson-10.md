@@ -51,6 +51,8 @@
 - **Testing the POST request:**
   Navigating to the browsable API endpoint (e.g., `/products/create/`) will show that only POST requests are allowed. An HTML form is provided to input data and send a POST request. Upon successful creation, a **201 Created** response with the new resource data is returned. The newly created data will also be visible in the list view endpoint (e.g., `/products/`).
 
+---
+
 - **Introducing `ListCreateAPIView` for combined list and create functionality:**
 
   ```python
