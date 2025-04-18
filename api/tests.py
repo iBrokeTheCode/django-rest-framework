@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from rest_framework import status
+
 from api.models import User, Order
 
 
@@ -25,3 +27,7 @@ class UserOrderTestCase(TestCase):
 
         orders = response.json()
         self.assertTrue(all(order['user'] == user.pk for order in orders))
+
+    def test_user_order_list_unauthenticated(self):
+        response = self.client.get(reverse('api:user_orders'))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

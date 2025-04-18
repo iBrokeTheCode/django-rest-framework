@@ -84,12 +84,11 @@
             self.assertTrue(all(order['user'] == user.pk for order in orders))
     ```
 
----
-
-### Continues here
+    > [!NOTE]
+    > Make sure to add a `name` for your endpoint `path('user-orders/', views.UserOrderListAPIView.as_view(), name='user_orders')` and if you add and `app_name` property, you should call it in the test.
 
 5.  **Write a test function to verify denial of access for an unauthenticated user.**
-    Send a GET request to the protected endpoint without logging in any user and assert that the response status code is `HTTP_403_FORBIDDEN` (using `status` from `rest_framework`) [3, 4].
+    Send a GET request to the protected endpoint without logging in any user and assert that the response status code is `HTTP_403_FORBIDDEN` (using `status` from `rest_framework`).
 
     ```python
     from django.test import TestCase
@@ -101,18 +100,17 @@
         # ... (authenticated user test)
 
         def test_user_order_list_unauthenticated(self):
-            url = reverse('user-orders')
-            response = self.client.get(url)
+            response = self.client.get(reverse('api:user_orders'))
             self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
     ```
 
-6.  **Import the `status` module** from `rest_framework` in your `tests.py` to use more descriptive constants for HTTP status codes, improving code readability [4].
+6.  **Import the `status` module** from `rest_framework` in your `tests.py` to use more descriptive constants for HTTP status codes, improving code readability.
 
     ```python
     from rest_framework import status
     ```
 
-7.  **Use the `status` constants** (e.g., `status.HTTP_200_OK`, `status.HTTP_403_FORBIDDEN`) instead of magic numbers in your assertions [4, 8]. This makes your tests more understandable and maintainable [8].
+7.  **Use the `status` constants** (e.g., `status.HTTP_200_OK`, `status.HTTP_403_FORBIDDEN`) instead of magic numbers in your assertions. This makes your tests more understandable and maintainable.
     ```python
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
