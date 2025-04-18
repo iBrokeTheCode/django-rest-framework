@@ -3,8 +3,7 @@ from django.db.models import Max, Min
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import generics
-
+from rest_framework import generics, permissions
 
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
@@ -30,6 +29,7 @@ class OrderListAPIView(generics.ListAPIView):
 class UserOrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = super().get_queryset()

@@ -47,3 +47,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 7. [Django REST Framework - Dynamic Filtering | Overriding get_queryset() method](./notes/lesson-07.md) | [Tutorial](https://youtu.be/3Gi-w4Swge8?si=arj4kv2XprfTKHae)
 
    In this lesson, we will explore how to dynamically filter data returned by Django REST Framework generic API views, specifically focusing on overriding the `get_queryset()` method. This technique allows you to customize the set of objects retrieved from the database based on dynamic information, such as the currently authenticated user.
+
+8. [Django REST Framework - Permissions and Testing Permissions](./notes/lesson-08.md) | [Tutorial](https://youtu.be/rx5IV_4Iuog?si=WjcKg4NyyEMW4_aZ)
+
+   This lesson introduces **permissions in Django REST Framework** and demonstrates how to create and apply them to generic view classes. It addresses the issue of unauthorized access to user-specific data and explains how permissions, in conjunction with authentication, control access to API endpoints. The lesson also covers how to write tests to ensure that permissions are enforced correctly.
