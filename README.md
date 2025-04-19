@@ -63,3 +63,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 11. [Django REST Framework - Customising permissions in Generic Views | VSCode REST Client extension](./notes/lesson-11.md) | [Tutorial](https://youtu.be/mlQZ1i8rUKQ?si=b4x-ObQXwoy8s3p1)
 
     This lesson explores how to customize permissions in Django REST Framework generic views on a case-by-case basis. It addresses scenarios where different permissions are required for different operations (e.g., GET vs. POST requests) on the same API endpoint. The lesson focuses on overriding the `get_permissions` method to dynamically apply permission classes based on the type of request. It also introduces the REST Client extension for VS Code as a convenient tool for testing APIs.
+
+12. [Django REST Framework - JWT Authentication with djangorestframework-simplejwt](./notes/lesson-12.md) | [Tutorial](https://youtu.be/Xp0-Yy5ow5k?si=RcZpSf6nlEnVsVY5)
+
+    In this lesson, we explore how to add **JSON Web Token (JWT) authentication** to a Django REST Framework (DRF) API using the `djangorestframework-simplejwt` package. This method allows clients to authenticate by sending a token in an HTTP header, which the API can then verify to permit or deny access to specific endpoints.
