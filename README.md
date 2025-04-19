@@ -75,3 +75,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 14. [Django REST Framework - Updating & Deleting data](./notes/lesson-13.md) | [Tutorial](https://youtu.be/08gHVFPFuBU?si=QZ0BjKxkzRATd8qr)
 
     This lesson explains how to implement update and delete functionality in a Django REST Framework API using generic views. It focuses on utilizing pre-built classes provided by the framework to streamline the process of building API endpoints for modifying single model instances.
+
+15. [drf-spectacular - Django REST Framework API Documentation](./notes/lesson-15.md) | [Tutorial](https://youtu.be/E3LUvsPWLwM?si=fyQsJuELVfEJZv4l)
+
+    In this lesson, we explore how to generate API documentation for Django REST Framework (DRF) APIs using the `drf-spectacular` library. The video emphasizes the importance of sharing API structure with various stakeholders like frontend and mobile developers to facilitate seamless integration.

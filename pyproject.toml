@@ -22,4 +22,5 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 django-silk = "^5.3.2"
+drf-spectacular = "^0.28.0"
 
