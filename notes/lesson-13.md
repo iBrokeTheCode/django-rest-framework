@@ -2,20 +2,20 @@
 
 ## 1. Core Concepts
 
-This lesson introduces the use of **generic views** in Django REST Framework to handle update and delete operations for API endpoints. Specifically, it discusses the `DestroyAPIView` and `UpdateAPIView`, along with their corresponding mixins (`DestroyModelMixin` and `UpdateModelMixin`).
+The use of **generic views** in Django REST Framework to handle update and delete operations for API endpoints. Specifically, it discusses the `DestroyAPIView` and `UpdateAPIView`, along with their corresponding mixins (`DestroyModelMixin` and `UpdateModelMixin`).
 
-The lesson then focuses on the **`RetrieveUpdateDestroyAPIView`**, which is a composite view that combines the functionality to retrieve, update, and delete a single model instance. This view is particularly useful when you need all three operations available for a resource accessible via its ID.
+The **`RetrieveUpdateDestroyAPIView`**, which is a composite view that combines the functionality to retrieve, update, and delete a single model instance. This view is particularly useful when you need all three operations available for a resource accessible via its ID.
 
 A key aspect highlighted is how these generic views work with **URL parameters** to identify the specific model instance to be acted upon. The `lookup_url_kwarg` (as seen in the `ProductDetailAPIView` example, referencing `productID` in the URL) is used to fetch the correct object from the database.
 
-The lesson emphasizes that by subclassing these generic views and associating them with a **serializer**, the framework automatically handles tasks such as:
+By subclassing these generic views and associating them with a **serializer**, the framework automatically handles tasks such as:
 
 - Fetching the relevant object based on the URL parameter.
 - Deserializing incoming request data (for PUT and PATCH requests) using the serializer.
 - Updating the database object with the provided data.
 - Deleting the specified database object (for DELETE requests).
 
-Furthermore, the lesson covers how to implement **permissions** on these update and delete endpoints. By overriding the `get_permissions` method, you can specify which users or groups have the authority to perform these actions. For instance, the lesson demonstrates restricting PUT and DELETE requests to administrator users using the `IsAdminUser` permission class.
+To implement **permissions** on these update and delete endpoints, by overriding the `get_permissions` method, you can specify which users or groups have the authority to perform these actions. For instance, the lesson demonstrates restricting PUT and DELETE requests to administrator users using the `IsAdminUser` permission class.
 
 ## 2. Resources
 
@@ -23,8 +23,6 @@ Furthermore, the lesson covers how to implement **permissions** on these update 
 - [Classy DRF](https://www.cdrf.co/)
 
 ## 3. Practical Steps
-
-This section provides a step-by-step guide based on the practical application demonstrated in the lesson.
 
 **Step 1: Modify your view to subclass `RetrieveUpdateDestroyAPIView`.**
 
@@ -39,7 +37,6 @@ from .serializers import ProductSerializer
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'id' # Assuming your URL uses 'id' to identify the product
 ```
 
 **Step 2: Ensure your `urls.py` includes a dynamic path parameter for identifying the object.**
@@ -54,7 +51,6 @@ from . import views
 urlpatterns = [
     # ... other patterns ...
     path('products/<int:id>/', views.ProductDetailAPIView.as_view()),
-    # ... other patterns ...
 ]
 ```
 
@@ -77,8 +73,8 @@ Content-Type: application/json
 {
     "name": "Television",
     "description": "A modern television",
-    "price": 500.00
-    // ... other fields to update ...
+    "price": 500.00,
+    "stock": 14
 }
 ```
 
@@ -102,19 +98,18 @@ Override the `get_permissions` method in your view to define permissions based o
 # views.py
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAdminUser
-from rest_framework.request import Request
 from .models import Product
 from .serializers import ProductSerializer
 
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'id'
 
     def get_permissions(self):
-        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
-            return [IsAdminUser()]
-        return [AllowAny()] # Allow anyone to retrieve (GET)
+        self.permission_classes = (AllowAny,)
+        if self.request.method in ('POST', 'PUT', 'PATCH', 'DELETE'):
+            self.permission_classes = (IsAdminUser,)
+        return super().get_permissions()
 ```
 
 This example restricts PUT, PATCH, and DELETE requests to users with the `is_staff` attribute set to `True` (as `IsAdminUser` checks this). GET requests remain open to all users (`AllowAny`).
@@ -133,11 +128,11 @@ DELETE /api/products/2/ HTTP/1.1
 If your API uses token-based authentication, you'll need to obtain a valid token for an administrator user. This typically involves sending a POST request to a login endpoint with the administrator's credentials.
 
 ```http
-POST /api/login/ HTTP/1.1
+POST /api/token/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "admin",
+    "username": "your_user",
     "password": "your_admin_password"
 }
 ```
@@ -151,7 +146,7 @@ For PUT and DELETE requests that require administrator permissions, add an `Auth
 ```http
 PUT /api/products/2/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer YOUR_ACCESS_TOKEN
+Authorization: Bearer <your_access_token>
 
 {
     "name": "Another Updated Television"
