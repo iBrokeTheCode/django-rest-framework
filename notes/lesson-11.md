@@ -17,11 +17,12 @@
 
 - [DRF Access Restriction Methods](https://www.django-rest-framework.org/api-guide/permissions/#overview-of-access-restriction-methods)
 - [VSCode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+- [curl cheat sheet](./curl-cheatsheet.md)
 
 ## 3. Practical Steps
 
 1.  **Identify the API view requiring different permissions for different request methods.**
-    In this lesson, the target is the `product list create API view`. It should allow anyone to retrieve the list of products (GET request) but restrict the creation of new products (POST request) to admin users only.
+    In this lesson, the target is the `ProductListCreateAPIView`. It should allow anyone to retrieve the list of products (GET request) but restrict the creation of new products (POST request) to admin users only.
 
 2.  **Import the necessary permission classes** from `rest_framework.permissions`.
 
