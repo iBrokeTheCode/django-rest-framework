@@ -20,6 +20,7 @@
 
 - [DRF Authentication](https://www.django-rest-framework.org/api-guide/authentication/)
 - [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
+- [JWT](https://jwt.io/)
 - [VSCode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 - [cURL commands](./curl-cheatsheet.md)
 
@@ -85,13 +86,18 @@
 
     A successful response will contain an `access` token and a `refresh` token.
 
----
-
-5.  **Authenticate subsequent requests using the access token**: Include an `Authorization` header in your HTTP requests with the value `Bearer <access_token>`, where `<access_token>` is the obtained access token.
+5.  **Authenticate subsequent requests using the access token**: Include an `Authorization` header in your HTTP requests with the value `Bearer <access_token>`, where `<access_token>` is the obtained access token (access).
 
     ```http
     GET /api/some_protected_endpoint/ HTTP/1.1
     Authorization: Bearer eyJh...<your_access_token>...
+    ```
+
+    or
+
+    ```shell
+    curl -X GET -i http://127.0.0.1:8000/user-orders/ \
+    -H 'Authorization: Bearer <your_token>'
     ```
 
     DRF will then verify the JWT in the `Authorization` header to authenticate the user.
@@ -103,7 +109,7 @@
     Content-Type: application/json
 
     {
-        "refresh": "eyJ0..."
+        "refresh": "<refresh-token>"
     }
     ```
 
@@ -116,13 +122,29 @@
     from rest_framework.permissions import IsAdminUser
 
     class ProductListCreateAPIView(generics.ListCreateAPIView):
-        # ...
+        queryset = Product.objects.all()
+        serializer_class = ProductSerializer
+
         def get_permissions(self):
+            self.permission_classes = (AllowAny,)
             if self.request.method == 'POST':
-                return [IsAdminUser()]
+                self.permission_classes = (IsAdminUser,)
             return super().get_permissions()
     ```
 
     This code snippet demonstrates how to apply the `IsAdminUser` permission class specifically to POST requests for creating products.
+
+    ```shell
+    # This fails (403 Forbidden) because it's not and admin user
+    curl -X POST -i http://127.0.0.1:8000/products/ \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer <token>' \
+    -d '{
+            "name": "Test Product",
+            "price": 300.00,
+            "stock": 14,
+            "description": "An amazing new TV"
+    }'
+    ```
 
 8.  **Handle changes in authentication failure response codes**: After setting `JWTAuthentication` as the highest priority authentication class, authentication failures on protected endpoints will likely result in a **401 Unauthorized** response instead of a 403 Forbidden response. Ensure your client-side applications and tests are adjusted to handle this change.
