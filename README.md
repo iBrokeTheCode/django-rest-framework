@@ -68,6 +68,10 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 
     In this lesson, we explore how to add **JSON Web Token (JWT) authentication** to a Django REST Framework (DRF) API using the `djangorestframework-simplejwt` package. This method allows clients to authenticate by sending a token in an HTTP header, which the API can then verify to permit or deny access to specific endpoints.
 
-13. [Django REST Framework - Updating & Deleting data](./notes/lesson-13.md) | [Tutorial](https://youtu.be/08gHVFPFuBU?si=QZ0BjKxkzRATd8qr)
+13. [Django REST Framework - Refresh Tokens & JWT Authentication](./notes/lesson-13.md) | [Tutorial](https://youtu.be/H3OY36wa7Cs?si=QILaKunFV4bROvva)
+
+    In this lesson, we will explore how to use refresh tokens in conjunction with JSON Web Token (JWT) authentication within a Django REST Framework API, utilizing the Simple JWT package. This lesson focuses on understanding the token refresh mechanism provided by the Simple JWT package.
+
+14. [Django REST Framework - Updating & Deleting data](./notes/lesson-13.md) | [Tutorial](https://youtu.be/08gHVFPFuBU?si=QZ0BjKxkzRATd8qr)
 
     This lesson explains how to implement update and delete functionality in a Django REST Framework API using generic views. It focuses on utilizing pre-built classes provided by the framework to streamline the process of building API endpoints for modifying single model instances.
