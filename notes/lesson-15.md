@@ -44,7 +44,6 @@ Within the `REST_FRAMEWORK` setting in your `settings.py` file, add or modify th
 REST_FRAMEWORK = {
     # ... other settings
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    # ... other settings
 }
 ```
 
@@ -53,11 +52,6 @@ REST_FRAMEWORK = {
 You can configure metadata like the API title, description, and version by adding a `SPECTACULAR_SETTINGS` dictionary in your `settings.py` file:
 
 ```python
-REST_FRAMEWORK = {
-    # ... other settings
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
-
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Your Project API',
     'DESCRIPTION': 'Description of your awesome API',
@@ -68,10 +62,8 @@ SPECTACULAR_SETTINGS = {
 
 **Step 5: Generate the `schema.yaml` file using the `spectacular` management command.**
 
-Run the following command in your terminal:
-
 ```bash
-python manage.py spectacular --file schema.yaml
+python manage.py spectacular --color --file schema.yml
 ```
 
 This command will generate a `schema.yaml` file in your project root (or as specified) containing the OpenAPI 3 schema of your API.
@@ -82,21 +74,23 @@ Open your project's `urls.py` file and add the following import and URL patterns
 
 ```python
 from django.urls import path
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     # ... other URL patterns
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
-    path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/schema/swagger-ui/',
+         SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/',
+         SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 ```
 
 These URL patterns will provide the following endpoints:
 
 - `/api/schema/`: Downloads the `schema.yaml` file.
-- `/api/swagger/`: Provides the interactive Swagger UI for your API documentation.
-- `/api/redoc/`: Provides the Redoc UI for your API documentation.
+- `/api/schema/swagger-ui/`: Provides the interactive Swagger UI for your API documentation.
+- `/api/schema/redoc/`: Provides the Redoc UI for your API documentation.
 
-After following these steps and running your Django development server, you can access your API documentation through the `/api/swagger/` and `/api/redoc/` endpoints in your browser. The schema can also be downloaded from the `/api/schema/` endpoint. This documentation will dynamically reflect your API structure based on your Django REST Framework views and serializers.
+After following these steps and running your Django development server, you can access your API documentation through the `/api/schema/swagger-ui/` and `/api/schema/redoc/` endpoints in your browser. The schema can also be downloaded from the `/api/schema/` endpoint. This documentation will dynamically reflect your API structure based on your Django REST Framework views and serializers.
