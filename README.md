@@ -58,4 +58,8 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 
 10. [Django REST Framework - Creating Data | ListCreateAPIView and Generic View Internals](./notes/lesson-10.md) | [Tutorial](https://youtu.be/Jh85U1nhMh8?si=Ea0hqVhwnC0oxbqe)
 
-In this lesson, we explore how to create data in a Django REST Framework application using generic views, specifically focusing on `CreateAPIView` and `ListCreateAPIView`. We'll also touch upon the underlying HTTP methods and the internal workings of these generic views.
+    In this lesson, we explore how to create data in a Django REST Framework application using generic views, specifically focusing on `CreateAPIView` and `ListCreateAPIView`. We'll also touch upon the underlying HTTP methods and the internal workings of these generic views.
+
+11. [Django REST Framework - Customising permissions in Generic Views | VSCode REST Client extension](./notes/lesson-11.md) | [Tutorial](https://youtu.be/mlQZ1i8rUKQ?si=b4x-ObQXwoy8s3p1)
+
+    This lesson explores how to customize permissions in Django REST Framework generic views on a case-by-case basis. It addresses scenarios where different permissions are required for different operations (e.g., GET vs. POST requests) on the same API endpoint. The lesson focuses on overriding the `get_permissions` method to dynamically apply permission classes based on the type of request. It also introduces the REST Client extension for VS Code as a convenient tool for testing APIs.
