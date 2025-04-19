@@ -76,6 +76,12 @@ curl -X DELETE http://localhost:8000/api/posts/5/ \
 
 ## 5. Authentication
 
+### Basic Authentication
+
+```shell
+curl -u username:password http://127.0.0.1:8000/api/protected/
+```
+
 ### Token Authentication (DRF `TokenAuthentication`)
 
 #### Obtain a token
@@ -123,6 +129,9 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 
 ```bash
 curl -v http://localhost:8000/api/posts/
+
+# optional
+curl -i http://localhost:8000/api/posts/
 ```
 
 ### Show only response headers
