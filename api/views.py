@@ -7,12 +7,14 @@ from rest_framework.views import APIView
 
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
+from api.filters import ProductFilter
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filterset_fields = ('name', 'price')
+    # filterset_fields = ('name', 'price')
+    filterset_class = ProductFilter
 
     def get_permissions(self):
         self.permission_classes = (AllowAny,)
