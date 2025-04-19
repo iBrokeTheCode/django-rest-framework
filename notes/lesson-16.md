@@ -33,13 +33,11 @@
 3.  **Set the Default Filter Backend (Global)**: In your `settings.py` file, within the `REST_FRAMEWORK` settings, add or modify the `DEFAULT_FILTER_BACKENDS` setting to include `django_filters.rest_framework.DjangoFilterBackend`.
     ```python
     REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': [
-            # ... your authentication classes
-        ],
-        'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-        'DEFAULT_FILTER_BACKENDS': [
+        # Other settings
+        'DEFAULT_FILTER_BACKENDS': (
             'django_filters.rest_framework.DjangoFilterBackend',
-        ]
+            # ...
+        ),
     }
     ```
 4.  **Enable Equality-Based Filtering (Simple)**: In your view, add the `filterset_fields` attribute and set it to a tuple of the field names you want to filter on for exact matches.

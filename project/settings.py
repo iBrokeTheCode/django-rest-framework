@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'django_extensions',
     'rest_framework',
+    'django_filters',
     'silk',
     'drf_spectacular',
 
@@ -134,15 +135,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Overwrite User model configuration
 AUTH_USER_MODEL = 'api.User'
 
-# JWT
 REST_FRAMEWORK = {
+    # JWT
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    # ... other settings
+    # DOCUMENTATION
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    # FILTERS
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        # ...
+    ),
 }
 
 # DRF-SPECTACULAR
@@ -151,5 +156,4 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Your project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
 }
