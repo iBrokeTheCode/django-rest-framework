@@ -19,7 +19,7 @@
 ## 2. Resources
 
 - [DRF Authentication](https://www.django-rest-framework.org/api-guide/authentication/)
-- [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt)
+- [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
 - [VSCode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 - [cURL commands](./curl-cheatsheet.md)
 
@@ -30,8 +30,6 @@
     ```bash
     pip install djangorestframework-simplejwt
     ```
-
-    This command installs the necessary library into your Python virtual environment.
 
 2.  **Configure `DEFAULT_AUTHENTICATION_CLASSES` in `settings.py`**: Add `'rest_framework_simplejwt.authentication.JWTAuthentication'` to the list of default authentication classes in your project's `settings.py` file. It's recommended to keep `SessionAuthentication` as a fallback, especially for accessing the Django admin interface.
 
@@ -77,7 +75,17 @@
     }
     ```
 
+    or
+
+    ```shell
+    curl -X POST -i http://127.0.0.1:8000/api/token/ \
+    -H 'Content-Type: application/json' \
+    -d '{"username": "your_user", "password": "your_code"}'
+    ```
+
     A successful response will contain an `access` token and a `refresh` token.
+
+---
 
 5.  **Authenticate subsequent requests using the access token**: Include an `Authorization` header in your HTTP requests with the value `Bearer <access_token>`, where `<access_token>` is the obtained access token.
 
