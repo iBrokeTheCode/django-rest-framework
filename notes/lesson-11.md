@@ -38,51 +38,27 @@
     ```python
     def get_permissions(self):
         # ... permission logic here ...
-        return [permission() for permission in self.permission_classes]
+        return super().get_permissions()
     ```
-
-    The `return [permission() for permission in self.permission_classes]` line instantiates the permission classes and returns a list of permission objects.
 
 4.  **Set a default permission class.**
-    Initially, set `self.permission_classes` to `[AllowAny]` to permit GET requests from any user.
+    Initially, set `self.permission_classes` to `[AllowAny]` to permit GET requests from any user. If the request method is `'POST'`, change `self.permission_classes` to `[IsAdminUser]` to enforce admin-level access for creating new products.
 
     ```python
     def get_permissions(self):
         self.permission_classes = [AllowAny]
         if self.request.method == 'POST':
             self.permission_classes = [IsAdminUser]
-        return [permission() for permission in self.permission_classes]
+        return super().get_permissions()
     ```
 
-5.  **Check the request method.**
-    Use an `if` statement to check if the request method (`self.request.method`) is a `'POST'` request.
+5.  **Test the API endpoints using the REST Client extension in VS Code.**
 
-    ```python
-    def get_permissions(self):
-        self.permission_classes = [AllowAny]
-        if self.request.method == 'POST':
-            # Apply admin-only permission for POST requests
-            pass
-        return [permission() for permission in self.permission_classes]
-    ```
-
-6.  **Conditionally set the permission classes based on the request method.**
-    If the request method is `'POST'`, change `self.permission_classes` to `[IsAdminUser]` to enforce admin-level access for creating new products.
-
-    ```python
-    def get_permissions(self):
-        self.permission_classes = [AllowAny]
-        if self.request.method == 'POST':
-            self.permission_classes = [IsAdminUser]
-        return [permission() for permission in self.permission_classes]
-    ```
-
-7.  **Test the API endpoints using the REST Client extension in VS Code.**
-
+    - Additionally, can do the same task with `curl`. Review [commands](./curl-cheatsheet.md)
     - Create a file (e.g., `api.http`) with the `.http` extension.
     - Define a GET request to the product list endpoint.
       ```http
-      GET http://your-api-endpoint/products/ HTTP/1.1
+      GET http://127.0.0.1/products/ HTTP/1.1
       ```
     - Define a POST request to the same endpoint to create a new product, including the `Content-Type` header and a JSON body. Separate requests with `###`.
 
@@ -94,11 +70,35 @@
 
       {
           "name": "Test Product",
-          "description": "A test product created via API"
+          "price": 300.00,
+          "stock": 14,
+          "description": "An amazing new TV"
       }
+      ```
+
+    - With `curl`
+
+      ```shell
+      # GET request
+      curl -i http://127.0.0.1:8000/products/
+
+      # POST request
+      curl -X POST -i http://127.0.0.1:8000/products/ \
+      -H 'Content-Type: application/json' \
+      -u user:password \
+      -d '{
+            "name": "Test Product",
+            "price": 300.00,
+            "stock": 14,
+            "description": "An amazing new TV"
+        }'
       ```
 
     - Sending the GET request should return the list of products without any authentication required.
     - Sending the POST request without proper admin authentication should result in a **403 Forbidden** response, indicating that the permission restriction is working. The response detail will likely state that "Authentication credentials were not provided".
+
+    ```
+
+    ```
 
 This approach of overriding `get_permissions` allows for fine-grained control over API access based on the specific actions being performed on an endpoint. The subsequent video will delve into integrating JWT (JSON Web Token) authentication to securely handle user roles and permissions.
