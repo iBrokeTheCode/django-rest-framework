@@ -250,7 +250,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsInfo'
+          description: ''
   /user-orders/:
     get:
       operationId: user_orders_list
@@ -290,7 +294,8 @@ components:
             $ref: '#/components/schemas/OrderItem'
           readOnly: true
         total_price:
-          type: string
+          type: number
+          format: double
           readOnly: true
       required:
       - created_at
@@ -312,7 +317,8 @@ components:
           minimum: 0
           format: int64
         item_subtotal:
-          type: string
+          type: number
+          format: double
           readOnly: true
       required:
       - item_subtotal
@@ -358,6 +364,26 @@ components:
       - name
       - price
       - stock
+    ProductsInfo:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        count:
+          type: integer
+        max_price:
+          type: number
+          format: double
+        min_price:
+          type: number
+          format: double
+      required:
+      - count
+      - max_price
+      - min_price
+      - products
     StatusEnum:
       enum:
       - pending
