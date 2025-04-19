@@ -87,6 +87,21 @@ files = [
 django = ">=4.2"
 
 [[package]]
+name = "django-filter"
+version = "25.1"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "django_filter-25.1-py3-none-any.whl", hash = "sha256:4fa48677cf5857b9b1347fed23e355ea792464e0fe07244d1fdfb8a806215b80"},
+    {file = "django_filter-25.1.tar.gz", hash = "sha256:1ec9eef48fa8da1c0ac9b411744b16c3f4c31176c867886e4c48da369c407153"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+
+[[package]]
 name = "django-silk"
 version = "5.3.2"
 description = "Silky smooth profiling for the Django Framework"
@@ -620,4 +635,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "197e7cdfa3a246b8d97e22c39a399db06301852e59c5b85e1291fcf4fc92b13d"
+content-hash = "c4be756d2c9a37b0a10623307d6452e1bb64684f6524ad035090d5e96e299c82"
