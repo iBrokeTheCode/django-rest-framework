@@ -90,27 +90,11 @@
     from api.models import Product
 
     class ProductFilter(django_filters.FilterSet):
-        name = django_filters.CharFilter(lookup_expr='icontains')
-        price = django_filters.RangeFilter()
-
-        class Meta:
-            model = Product
-            fields = ['name', 'price']
-    ```
-
-    Alternatively, using the dictionary syntax within `Meta`:
-
-    ```python
-    # api/filters.py
-    import django_filters
-    from api.models import Product
-
-    class ProductFilter(django_filters.FilterSet):
         class Meta:
             model = Product
             fields = {
-                'name': ['exact', 'icontains'],
-                'price': ['exact', 'lt', 'gt', 'range']
+                'name': ['iexact', 'icontains'],
+                'price': ['iexact', 'lt', 'gt', 'range']
             }
     ```
 
