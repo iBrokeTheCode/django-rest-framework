@@ -8,13 +8,22 @@ from rest_framework.views import APIView
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.pagination import PageNumberPagination
+
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
 from api.filters import ProductFilter, InStockFilter
 
 
+class CustomPagination(PageNumberPagination):
+    page_size = 3
+    page_query_param = 'page'
+    page_size_query_param = 'size'
+    max_page_size = 5
+
+
 class ProductListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.order_by('pk')
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
     filter_backends = (
@@ -25,6 +34,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     )
     search_fields = ('name', 'description')
     ordering_fields = ('name', 'price', 'stock')
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         self.permission_classes = (AllowAny,)
