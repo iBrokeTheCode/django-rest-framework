@@ -18,8 +18,6 @@ Both pagination methods can be configured globally in the `settings.py` file or 
 
 ## 3. Practical Steps
 
-This section provides a step-by-step guide on how to implement and customize pagination in Django REST Framework, based on the lesson.
-
 **Setting up default PageNumberPagination globally:**
 
 1.  Open your project's `settings.py` file.
@@ -55,7 +53,7 @@ This section provides a step-by-step guide on how to implement and customize pag
         queryset = Product.objects.all()
         serializer_class = ProductSerializer
         pagination_class = PageNumberPagination
-        page_size = 2  # Override the default page size for this view
+        pagination_class.page_size = 2  # Override the default page size for this view
     ```
 
     Here, `PageNumberPagination` is explicitly set for this view, and the `page_size` is set to 2, overriding the global setting.
@@ -70,7 +68,7 @@ This section provides a step-by-step guide on how to implement and customize pag
         queryset = Product.objects.all().order_by('pk') # Order by primary key
         serializer_class = ProductSerializer
         pagination_class = PageNumberPagination
-        page_size = 2
+        pagination_class.page_size = 2
     ```
 
     Ordering by a stable field like the primary key ensures consistent pagination.
