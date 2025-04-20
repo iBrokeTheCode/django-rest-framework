@@ -21,6 +21,8 @@
 - [Django REST Framework Viewsets](https://www.django-rest-framework.org/api-guide/viewsets/)
 - [Classy DRF](https://www.cdrf.co/)
 - [Django REST Framework Routers](https://www.django-rest-framework.org/api-guide/routers/)
+- [isort formatter](https://pycqa.github.io/isort/)
+- [Viewsets @action](https://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing)
 
 ## 3. Practical Steps:
 
@@ -85,8 +87,6 @@ class OrderFilter(django_filters.FilterSet):
         }
 ```
 
----
-
 **Step 4: Define a custom action in a ViewSet.**
 
 Use the `@action` decorator to create a new, routable method in your viewset.
@@ -103,12 +103,16 @@ from .serializers import OrderSerializer
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().prefetch_related('order_items')
     serializer_class = OrderSerializer
-    # ... (filter backends and filterset class)
-    # permission_classes = [IsAuthenticated] # Apply to all actions
+    # ...
 
-    @action(detail=False, methods=['get'], url_path='user-orders', permission_classes=[IsAuthenticated])
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='user-orders',
+        permission_classes=[IsAuthenticated]
+    )
     def user_orders(self, request):
-        queryset = self.get_queryset().filter(user=request.user)
+        queryset = self.get_queryset().filter(user=request.user)  # orders
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 ```
@@ -116,16 +120,5 @@ class OrderViewSet(viewsets.ModelViewSet):
 **Step 5: Register the ViewSet with the Router.**
 
 Make sure your viewset is registered with the default router in your `urls.py` to automatically generate the URLs for the standard actions and any custom actions.
-
-```python
-# api/urls.py
-from rest_framework.routers import DefaultRouter
-from . import views
-
-router = DefaultRouter()
-router.register(r'orders', views.OrderViewSet)
-
-urlpatterns = router.urls
-```
 
 After these steps, you will have a viewset that supports filtering based on your defined criteria, includes a custom action accessible at the `/orders/user-orders/` endpoint (requiring authentication), and can have permissions applied at both the viewset and individual action levels.
