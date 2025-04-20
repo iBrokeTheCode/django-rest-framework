@@ -91,3 +91,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 18. [Writing Filter Backends in Django REST Framework!](./notes/lesson-18.md) | [Tutorial](https://youtu.be/u4S71cO5QhI?si=qd_LbNaIZaHlVKhi)
 
     This lesson demonstrates how to create **custom filter backends** in DRF. It explains the process of extending the base `FilterBackend` class to implement specific filtering logic that goes beyond the functionalities provided by the built-in filter backends like `DjangoFilterBackend`, `SearchFilter`, and `OrderingFilter`.
+
+19. [API Pagination - Django REST Framework | PageNumberPagination & LimitOffsetPagination](./notes/lesson-19.md) | [Tutorial](https://youtu.be/sTyMe2R9mzk?si=pMuzKtBmz2V1vWkp)
+
+    When building APIs, especially those dealing with a large amount of data, returning all records in a single response can lead to performance issues and a poor user experience. Pagination addresses this by dividing the data into smaller, more manageable pages. This lesson explores how to implement pagination in Django REST Framework using two primary methods: PageNumberPagination and LimitOffsetPagination.
