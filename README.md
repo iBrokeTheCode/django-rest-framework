@@ -107,3 +107,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 22. [Viewset Permissions | Admin vs. Normal User in Django](./notes/lesson-22.md) | [Tutorial](https://youtu.be/KmYYg1qJKNQ?si=UIpi6ouJu2xVqQqu)
 
     This lesson explores how to implement **role-based permissions** within Django REST Framework viewsets. It demonstrates how to differentiate between administrators and regular users to control access to data and actions. The focus is on modifying the behavior of an `OrderViewSet` to ensure users can only interact with their own orders, while administrators retain full access to all orders.
+
+23. [Creating Nested Objects | Overriding serializer create() method in Django REST Framework](./notes/lesson-23.md) | [Tutorial](https://youtu.be/CAq7AKAT7Q0?si=3AVSWuYdpmjfGNkt)
+
+    In this lesson, we explore how to handle the creation of related objects when a POST request is made to a Django REST Framework server. The primary focus is on implementing **writable nested representations**, allowing clients to send data for both a main object and its associated nested objects in a single request. The lesson uses the example of creating an `Order` along with its `OrderItem`s.
