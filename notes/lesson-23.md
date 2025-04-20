@@ -40,8 +40,6 @@
               fields = ('user', 'status', 'items', 'total_price')
       ```
 
----
-
 4.  **Override `get_serializer_class()` in the `OrderViewSet`**: This method was overridden to use the `OrderCreateSerializer` specifically for the `create` action (POST requests).
 
     ```python
@@ -51,7 +49,8 @@
         serializer_class = OrderSerializer
         # ... other configurations ...
 
-        def get_serializer_class(self):
+        def get_serializer_class(self) -> type:
+            # can also check if POST: if self.request.method == 'POST'
             if self.action == 'create':
                 return OrderCreateSerializer
             return super().get_serializer_class()
@@ -61,14 +60,21 @@
 
     ```python
     class OrderCreateSerializer(serializers.ModelSerializer):
+        class OrderItemCreateSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = OrderItem
+                fields = ('product', 'quantity')
+
+        order_id = serializers.UUIDField(read_only=True)
         items = OrderItemCreateSerializer(many=True)
-        # ... other fields ...
 
         def create(self, validated_data):
             order_item_data = validated_data.pop('items')
             order = Order.objects.create(**validated_data)
-            for item_data in order_item_data:
-                OrderItem.objects.create(order=order, **item_data)
+
+            for item in order_item_data:
+                OrderItem.objects.create(order=order, **item)
+
             return order
     ```
 
@@ -76,22 +82,9 @@
     - The `Order` object was created using the remaining `validated_data`.
     - The code then iterated through the `order_item_data` and created each `OrderItem`, associating it with the newly created `Order`.
     - Finally, the created `Order` object was returned.
+    - **Add `order_id` to the `OrderCreateSerializer` response**: To include the `order_id` in the response after a successful POST request, a read-only `order_id` field was added to the `OrderCreateSerializer`.
 
-6.  **Add `order_id` to the `OrderCreateSerializer` response**: To include the `order_id` in the response after a successful POST request, a read-only `order_id` field was added to the `OrderCreateSerializer`.
-
-    ```python
-    class OrderCreateSerializer(serializers.ModelSerializer):
-        order_id = serializers.UUIDField(read_only=True)
-        items = OrderItemCreateSerializer(many=True)
-        # ... other fields ...
-
-        class Meta:
-            model = Order
-            fields = ['order_id', 'user', 'status', 'items'] # Removed total_price
-            extra_kwargs = {'user': {'read_only': False}} # Temporarily
-    ```
-
-7.  **Automatically set the user using `perform_create()`**: To avoid requiring the client to send the `user_id` in the POST request, the `perform_create()` method was overridden in the `OrderViewSet` to automatically set the `user` based on the authenticated user making the request.
+6.  **Automatically set the user using `perform_create()`**: To avoid requiring the client to send the `user_id` in the POST request, the `perform_create()` method was overridden in the `OrderViewSet` to automatically set the `user` based on the authenticated user making the request.
 
     ```python
     class OrderViewSet(viewsets.ModelViewSet):
@@ -107,7 +100,7 @@
             serializer.save(user=self.request.user)
     ```
 
-8.  **Make the `user` field read-only in `OrderCreateSerializer`**: After implementing `perform_create()` to auto-set the user, the `user` field in `OrderCreateSerializer` was made read-only using the `extra_kwargs` in the `Meta` class. This prevents the client from specifying the user during order creation.
+7.  **Make the `user` field read-only in `OrderCreateSerializer`**: After implementing `perform_create()` to auto-set the user, the `user` field in `OrderCreateSerializer` was made read-only using the `extra_kwargs` in the `Meta` class. This prevents the client from specifying the user during order creation.
 
     ```python
     class OrderCreateSerializer(serializers.ModelSerializer):
