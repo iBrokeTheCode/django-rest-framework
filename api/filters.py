@@ -19,6 +19,8 @@ class InStockFilter(filters.BaseFilterBackend):
 
 
 class OrderFilter(django_filters.FilterSet):
+    created_at = django_filters.DateFilter(field_name='created_at__date')
+
     class Meta:
         model = Order
         fields = {

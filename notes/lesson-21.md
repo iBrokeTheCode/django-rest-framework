@@ -65,8 +65,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     filterset_class = OrderFilter
 ```
 
----
-
 **Step 3: Override Filter Fields for Advanced Filtering (e.g., date extraction).**
 
 To filter based on the date part of a `DateTimeField`, override the field in your `FilterSet` with a `DateFilter` and use the `date` lookup modifier.
@@ -77,31 +75,17 @@ import django_filters
 from .models import Order
 
 class OrderFilter(django_filters.FilterSet):
-    status = django_filters.CharFilter(lookup_expr='exact')
-    created_at = django_filters.DateTimeFilter(lookup_expr=['lt', 'gt'])
-    created_date = django_filters.DateFilter(field_name='created_at__date', lookup_expr='exact')
+    created_at = django_filters.DateFilter(field_name='created_at__date')
 
     class Meta:
         model = Order
-        fields = ['status', 'created_at', 'created_date']
+        fields = {
+            'status': ('exact',),
+            'created_at': ('lt', 'gt', 'exact')
+        }
 ```
 
-Alternatively, you can override the field directly in the `FilterSet` definition:
-
-```python
-# api/filters.py
-import django_filters
-from .models import Order
-
-class OrderFilter(django_filters.FilterSet):
-    status = django_filters.CharFilter(lookup_expr='exact')
-    created_at = django_filters.DateTimeFilter(lookup_expr=['lt', 'gt'])
-    created_at = django_filters.DateFilter(field_name='created_at', lookup_expr='date')
-
-    class Meta:
-        model = Order
-        fields = ['status', 'created_at']
-```
+---
 
 **Step 4: Define a custom action in a ViewSet.**
 
