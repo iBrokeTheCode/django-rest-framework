@@ -87,3 +87,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 17. [SearchFilter and OrderingFilter in Django REST Framework](./notes/lesson-17.md) | [Tutorial](https://youtu.be/LCYqDsl1WYI?si=f7Na2ayX0SqApeIz)
 
     In this lesson, we explore how to enhance your Django REST Framework APIs by adding functionalities for searching and ordering data using URL parameters. These features allow clients to easily filter and sort API responses according to their needs.
+
+18. [Writing Filter Backends in Django REST Framework!](./notes/lesson-18.md) | [Tutorial](https://youtu.be/u4S71cO5QhI?si=qd_LbNaIZaHlVKhi)
+
+    This lesson demonstrates how to create **custom filter backends** in DRF. It explains the process of extending the base `FilterBackend` class to implement specific filtering logic that goes beyond the functionalities provided by the built-in filter backends like `DjangoFilterBackend`, `SearchFilter`, and `OrderingFilter`.
