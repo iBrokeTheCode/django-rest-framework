@@ -62,6 +62,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('order_id', 'user', 'status', 'items')
 
+        extra_kwargs = {'user': {'read_only': True}}
+
 
 class ProductsInfoSerializer(serializers.Serializer):
     products = ProductSerializer(many=True)

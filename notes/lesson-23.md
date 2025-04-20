@@ -96,6 +96,7 @@
                 return OrderCreateSerializer
             return super().get_serializer_class()
 
+        # Overwrite this method
         def perform_create(self, serializer):
             serializer.save(user=self.request.user)
     ```
@@ -110,7 +111,7 @@
 
         class Meta:
             model = Order
-            fields = ['order_id', 'user', 'status', 'items'] # Removed total_price
+            fields = ['order_id', 'user', 'status', 'items']
             extra_kwargs = {'user': {'read_only': True}}
     ```
 
