@@ -11,10 +11,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 
 from rest_framework import viewsets
+from rest_framework.decorators import action
 
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
-from api.filters import ProductFilter, InStockFilter
+from api.filters import ProductFilter, InStockFilter, OrderFilter
 
 
 class CustomPagination(PageNumberPagination):
@@ -75,8 +76,21 @@ class ProductInfoAPIView(APIView):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = OrderFilter
+
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='user-orders',
+        # permission_classes=[IsAuthenticated]
+    )
+    def user_orders(self, request):
+        queryset = self.get_queryset().filter(user=request.user)  # orders
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class UserOrderListAPIView(generics.ListAPIView):
