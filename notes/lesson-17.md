@@ -36,11 +36,8 @@
 1.  **Import necessary modules from `rest_framework` and `django_filters` (if you are using `DjangoFilterBackend` as well).**
 
     ```python
-    from rest_framework import generics
     from rest_framework import filters
     from django_filters.rest_framework import DjangoFilterBackend
-    from .models import Product
-    from .serializers import ProductSerializer
     ```
 
 2.  **In your generic view (e.g., `ListAPIView`, `ListCreateAPIView`) or viewset, define the `filter_backends` attribute as a list and include `filters.SearchFilter` and/or `filters.OrderingFilter` along with any other filter backends you are using (like `DjangoFilterBackend`).**
@@ -49,7 +46,7 @@
     class ProductListCreateAPIView(generics.ListCreateAPIView):
         queryset = Product.objects.all()
         serializer_class = ProductSerializer
-        filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+        filter_backends = (DjangoFilterBackend, filters.SearchFilter)
         # ... other configurations
     ```
 
@@ -59,18 +56,12 @@
     class ProductListCreateAPIView(generics.ListCreateAPIView):
         queryset = Product.objects.all()
         serializer_class = ProductSerializer
-        filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-        search_fields = ['name', 'description']
+        filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+        search_fields = ('name', 'description')
         # ... other configurations
     ```
 
-4.  **(Optional) To enable exact matching on a specific field in the `search_fields`, prefix the field name with `=`.** For example, to perform an exact match on the `name` field and a partial match on the `description`:
-
-    ```python
-    search_fields = ['=name', 'description']
-    ```
-
-5.  **If you want to enable ordering, add the `ordering_fields` attribute to your view class. Set its value to a list or tuple of the model field names that clients are allowed to order the results by.** For example, to allow ordering by `name`, `price`, and `stock`:
+4.  **If you want to enable ordering, add the `ordering_fields` attribute to your view class. Set its value to a list or tuple of the model field names that clients are allowed to order the results by.** For example, to allow ordering by `name`, `price`, and `stock`:
 
     ```python
     class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -82,6 +73,6 @@
         # ... other configurations
     ```
 
-6.  **Once configured, clients can use the `search` URL parameter to filter results based on the fields specified in `search_fields` (e.g., `/products/?search=Vision`). The search performs a case-insensitive partial match by default.**
+5.  **Once configured, clients can use the `search` URL parameter to filter results based on the fields specified in `search_fields` (e.g., `/products/?search=Vision`). The search performs a case-insensitive partial match by default.**
 
-7.  **Clients can use the `ordering` URL parameter to sort the results based on the fields listed in `ordering_fields` (e.g., `/products/?ordering=price` for ascending order, `/products/?ordering=-price` for descending order).**
+6.  **Clients can use the `ordering` URL parameter to sort the results based on the fields listed in `ordering_fields` (e.g., `/products/?ordering=price` for ascending order, `/products/?ordering=-price` for descending order).**
