@@ -26,38 +26,9 @@
 2.  **Define a new class for your custom filter backend.** In this lesson, a filter to return only products in stock is created. The class is named `InStockFilterBackend`.
 
     ```python
-    class InStockFilterBackend(filters.BaseFilterBackend):
-        def filter_queryset(self, request, queryset, view):
-            # Define your filtering logic here
-            return queryset
-    ```
-
-3.  **Import the `rest_framework.filters` module.** This is necessary to inherit from the `BaseFilterBackend` class.
-
-    ```python
     from rest_framework import filters
-    ```
 
-4.  **Inherit from the `BaseFilterBackend` class.** This establishes your class as a custom filter backend.
-
-    ```python
-    class InStockFilterBackend(filters.BaseFilterBackend):
-        pass # Implementation will go here
-    ```
-
-5.  **Override the `filter_queryset` method.** This method will contain the core filtering logic.
-
-    ```python
-    class InStockFilterBackend(filters.BaseFilterBackend):
-        def filter_queryset(self, request, queryset, view):
-            # Filtering logic
-            return queryset
-    ```
-
-6.  **Implement the filtering logic within the `filter_queryset` method.** In this example, the goal is to filter the `queryset` to include only products where the `stock` field is greater than zero. The `filter()` method of the queryset is used to achieve this.
-
-    ```python
-    class InStockFilterBackend(filters.BaseFilterBackend):
+    class InStockFilter(filters.BaseFilterBackend):
         def filter_queryset(self, request, queryset, view):
             return queryset.filter(stock__gt=0)
     ```
@@ -70,31 +41,29 @@
             return queryset.exclude(stock__gt=0)
     ```
 
-7.  **Go to your `views.py` file** where your generic view is defined.
+3.  **Go to your `views.py` file** where your generic view is defined.
 
-8.  **Import your custom filter backend.** Add an import statement at the top of the file to make your `InStockFilterBackend` available. Assuming your `filters.py` file is in the `api` app:
-
-    ```python
-    from api.filters import ProductFilter, InStockFilterBackend
-    ```
-
-9.  **Add your custom filter backend to the `filter_backends` list** in your generic view. This tells Django REST Framework to use your custom filtering logic.
+4.  **Add your custom filter backend to the `filter_backends` list** in your generic view. This tells Django REST Framework to use your custom filtering logic.
 
     ```python
-    from rest_framework import generics
-    from .models import Product
-    from .serializers import ProductSerializer
+    # Other imports
+    from rest_framework import filters
     from django_filters.rest_framework import DjangoFilterBackend
-    from rest_framework import filters as drf_filters
-    from api.filters import ProductFilter, InStockFilterBackend
 
-    class ProductListView(generics.ListAPIView):
+    from api.models import Product, Order, OrderItem
+    from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
+    from api.filters import ProductFilter, InStockFilter
+
+    class ProductListCreateAPIView(generics.ListCreateAPIView):
         queryset = Product.objects.all()
         serializer_class = ProductSerializer
-        filter_backends = [DjangoFilterBackend, drf_filters.SearchFilter, drf_filters.OrderingFilter, InStockFilterBackend]
         filterset_class = ProductFilter
-        search_fields = ['name', 'description']
-        ordering_fields = ['name', 'price']
+        filter_backends = (
+            DjangoFilterBackend,
+            filters.SearchFilter,
+            filters.OrderingFilter,
+            InStockFilter # Add your custom filter
+        )
     ```
 
-10. **Test your API endpoint.** Accessing the endpoint will now automatically apply the filtering logic defined in your custom filter backend. For the `InStockFilterBackend`, only products with a `stock` count greater than zero will be returned. If the `exclude` method was used, only products with a `stock` count of zero would be returned.
+5.  **Test your API endpoint.** Accessing the endpoint will now automatically apply the filtering logic defined in your custom filter backend. For the `InStockFilterBackend`, only products with a `stock` count greater than zero will be returned. If the `exclude` method was used, only products with a `stock` count of zero would be returned.
