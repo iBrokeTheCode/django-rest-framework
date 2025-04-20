@@ -81,16 +81,24 @@ class OrderViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = OrderFilter
 
-    @action(
-        detail=False,
-        methods=['get'],
-        url_path='user-orders',
-        # permission_classes=[IsAuthenticated]
-    )
-    def user_orders(self, request):
-        queryset = self.get_queryset().filter(user=request.user)  # orders
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if not self.request.user.is_staff:
+            qs = qs.filter(user=self.request.user)
+
+        return qs
+
+    # @action(
+    #     detail=False,
+    #     methods=['get'],
+    #     url_path='user-orders',
+    #     # permission_classes=[IsAuthenticated]
+    # )
+    # def user_orders(self, request):
+    #     queryset = self.get_queryset().filter(user=request.user)  # orders
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
 
 
 class UserOrderListAPIView(generics.ListAPIView):
