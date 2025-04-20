@@ -81,17 +81,16 @@ Both pagination methods can be configured globally in the `settings.py` file or 
     ```python
     from rest_framework.pagination import PageNumberPagination
 
-    class CustomPageNumberPagination(PageNumberPagination):
-        page_query_param = 'pageNum'
+    class CustomPagination(PageNumberPagination):
+        page_size = 3
+        page_query_param = 'page_num'
 
     class ProductListCreateAPIView(generics.ListCreateAPIView):
-        queryset = Product.objects.all().order_by('pk')
-        serializer_class = ProductSerializer
-        pagination_class = CustomPageNumberPagination # Use the custom pagination class
-        page_size = 2
+        # ...
+        pagination_class = CustomPagination
     ```
 
-    Now, the page number will be specified using `pageNum` in the URL (e.g., `/products/?pageNum=2`).
+    Now, the page number will be specified using `page_num` in the URL (e.g., `/products/?page_num=2`).
 
 **Allowing client-side control of page size:**
 
@@ -101,10 +100,13 @@ Both pagination methods can be configured globally in the `settings.py` file or 
     ```python
     from rest_framework.pagination import PageNumberPagination
 
-    class CustomPageNumberPagination(PageNumberPagination):
-        page_query_param = 'pageNum'
+    class CustomPagination(PageNumberPagination):
         page_size_query_param = 'size'  # Allow clients to set page size with 'size' parameter
         max_page_size = 4          # Limit the maximum page size
+
+    class ProductListCreateAPIView(generics.ListCreateAPIView):
+        # ...
+        pagination_class = CustomPagination
     ```
 
     Clients can now use the `size` query parameter (e.g., `/products/?size=3`) to request a specific number of items per page, up to the `max_page_size`.

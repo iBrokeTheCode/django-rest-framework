@@ -15,6 +15,13 @@ from api.serializers import ProductSerializer, OrderSerializer, OrderItemSeriali
 from api.filters import ProductFilter, InStockFilter
 
 
+class CustomPagination(PageNumberPagination):
+    page_size = 3
+    page_query_param = 'page'
+    page_size_query_param = 'size'
+    max_page_size = 5
+
+
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.order_by('pk')
     serializer_class = ProductSerializer
@@ -27,8 +34,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     )
     search_fields = ('name', 'description')
     ordering_fields = ('name', 'price', 'stock')
-    pagination_class = PageNumberPagination
-    pagination_class.page_size = 2
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         self.permission_classes = (AllowAny,)
