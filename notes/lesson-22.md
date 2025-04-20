@@ -72,18 +72,7 @@
         return queryset
     ```
 
-5.  **Return the (potentially filtered) queryset:**
-    The `get_queryset` method must return the `queryset`. This will be the set of `Order` objects that the viewset will operate on for the current request.
-
-    ```python
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user)
-        return queryset
-    ```
-
-6.  **Testing the implementation (using a tool like VS Code REST Client):**
+5.  **Testing the implementation (using a tool like VS Code REST Client):**
     - **Obtain access tokens:** Use an endpoint to retrieve authentication tokens for both an administrator user (with `is_staff=True`) and a normal user (with `is_staff=False`).
     - **Send a GET request to the `/orders` endpoint with the administrator's token:** You should receive a list of **all orders** in the database.
     - **Send a GET request to the `/orders` endpoint with the normal user's token:** You should receive a list containing **only the orders associated with that specific user**.
