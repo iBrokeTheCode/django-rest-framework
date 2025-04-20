@@ -83,3 +83,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 16. [django-filter and DRF API filtering - Django REST Framework](./notes/lesson-16.md) | [Tutorial](https://youtu.be/NDFgTGTI8zg?si=YGf7oehxc_n7JvBr)
 
     This lesson provides an introduction to applying filtering, searching, and ordering to API response data in Django REST Framework (DRF) using the `django-filter` package. It emphasizes the importance of allowing clients to filter data to improve API performance by reducing unnecessary data transfer and potentially optimizing database queries.
+
+17. [SearchFilter and OrderingFilter in Django REST Framework](./notes/lesson-17.md) | [Tutorial](https://youtu.be/LCYqDsl1WYI?si=f7Na2ayX0SqApeIz)
+
+    In this lesson, we explore how to enhance your Django REST Framework APIs by adding functionalities for searching and ordering data using URL parameters. These features allow clients to easily filter and sort API responses according to their needs.
