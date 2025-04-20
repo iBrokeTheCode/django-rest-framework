@@ -61,17 +61,27 @@
         # ... other configurations
     ```
 
+    To enable exact matching on a specific field in the search_fields, prefix the field name with =. For example, to perform an exact match on the name field and a partial match on the description:
+
+    ```py
+    search_fields = ['=name', 'description']
+    ```
+
 4.  **If you want to enable ordering, add the `ordering_fields` attribute to your view class. Set its value to a list or tuple of the model field names that clients are allowed to order the results by.** For example, to allow ordering by `name`, `price`, and `stock`:
 
     ```python
     class ProductListCreateAPIView(generics.ListCreateAPIView):
         queryset = Product.objects.all()
         serializer_class = ProductSerializer
-        filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-        search_fields = ['name', 'description']
-        ordering_fields = ['name', 'price', 'stock']
+        filterset_class = ProductFilter
+        filter_backends = (DjangoFilterBackend,
+                        filters.SearchFilter, filters.OrderingFilter)
+        search_fields = ('name', 'description')
+        ordering_fields = ('name', 'price', 'stock')
         # ... other configurations
     ```
+
+    To reverse the ordering, add the `-` symbol in the URL. For example: `http://127.0.0.1:8000/products/?ordering=-price`
 
 5.  **Once configured, clients can use the `search` URL parameter to filter results based on the fields specified in `search_fields` (e.g., `/products/?search=Vision`). The search performs a case-insensitive partial match by default.**
 
