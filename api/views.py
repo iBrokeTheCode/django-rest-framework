@@ -76,7 +76,7 @@ class ProductInfoAPIView(APIView):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
     filterset_class = OrderFilter
@@ -85,7 +85,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         detail=False,
         methods=['get'],
         url_path='user-orders',
-        permission_classes=[IsAuthenticated]
+        # permission_classes=[IsAuthenticated]
     )
     def user_orders(self, request):
         queryset = self.get_queryset().filter(user=request.user)  # orders

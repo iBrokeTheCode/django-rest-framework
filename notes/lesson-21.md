@@ -117,6 +117,28 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 ```
 
+Optionally, can define the permission at the viewset level, so you don't need to add the `permission_classes` in the custom @action
+
+```py
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated,)
+    pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = OrderFilter
+
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='user-orders',
+    )
+    def user_orders(self, request):
+        queryset = self.get_queryset().filter(user=request.user)  # orders
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+```
+
 **Step 5: Register the ViewSet with the Router.**
 
 Make sure your viewset is registered with the default router in your `urls.py` to automatically generate the URLs for the standard actions and any custom actions.
