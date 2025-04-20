@@ -99,3 +99,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 20. [Viewsets & Routers in Django REST Framework](./notes/lesson-20.md) | [Tutorial](https://youtu.be/4MrB4IvW6Ow?si=dOk0_IGYxpYprVv3)
 
     In this lesson, we explore **ViewSets** and **Routers** in Django REST Framework, which are powerful tools for building efficient and well-structured APIs. ViewSets allow you to combine the logic for a set of related views into a single class, while Routers automatically handle the URL configuration for these ViewSets.
+
+21. [Viewset Actions, Filtering and Permissions in Django REST Framework](./notes/lesson-21.md) | [Tutorial](https://youtu.be/rekvVrjUMjg?si=aFZZqxiJQcozXLqg)
+
+    This lesson explores how to leverage **viewsets** in Django REST Framework to build powerful APIs. It covers essential techniques for **filtering** data, defining **custom actions**, and managing **permissions** at different levels within a viewset.
