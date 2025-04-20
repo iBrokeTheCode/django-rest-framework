@@ -31,24 +31,16 @@ Create a file (e.g., `filters.py` in your API app) and define a `FilterSet` that
 ```python
 # api/filters.py
 import django_filters
-from .models import Product, Order
+from .models import Order
 
-class ProductFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr=['iexact', 'icontains'])
-    price = django_filters.NumberFilter(lookup_expr=['exact', 'lt', 'gt'])
-    price__range = django_filters.RangeFilter()
-
-    class Meta:
-        model = Product
-        fields = ['name', 'price']
-
+# Other filters
 class OrderFilter(django_filters.FilterSet):
-    status = django_filters.CharFilter(lookup_expr='exact')
-    created_at = django_filters.DateTimeFilter(lookup_expr=['lt', 'gt', 'exact'])
-
     class Meta:
         model = Order
-        fields = ['status', 'created_at']
+        fields = {
+            'status': ('exact',),
+            'created_at': ('lt', 'gt', 'exact')
+        }
 ```
 
 **Step 2: Use the custom FilterSet in a ViewSet.**
@@ -65,12 +57,15 @@ from .serializers import OrderSerializer
 from .filters import OrderFilter
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all().prefetch_related('order_items')
+    queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
-    filter_backends = [DjangoFilterBackend]
+    permission_classes = (AllowAny,)
+    pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = OrderFilter
-    # permission_classes = [IsAuthenticated] # Apply to all actions
 ```
+
+---
 
 **Step 3: Override Filter Fields for Advanced Filtering (e.g., date extraction).**
 

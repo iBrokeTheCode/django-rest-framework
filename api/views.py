@@ -14,7 +14,7 @@ from rest_framework import viewsets
 
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
-from api.filters import ProductFilter, InStockFilter
+from api.filters import ProductFilter, InStockFilter, OrderFilter
 
 
 class CustomPagination(PageNumberPagination):
@@ -77,6 +77,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = (AllowAny,)
     pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = OrderFilter
 
 
 class UserOrderListAPIView(generics.ListAPIView):
