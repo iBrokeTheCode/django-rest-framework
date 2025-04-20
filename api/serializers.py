@@ -40,6 +40,19 @@ class OrderSerializer(serializers.ModelSerializer):
                   'status', 'items', 'total_price')
 
 
+class OrderCreateSerializer(serializers.ModelSerializer):
+    class OrderItemCreateSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = OrderItem
+            fields = ('product', 'quantity')
+
+    items = OrderItemCreateSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ('user', 'status', 'items', 'total_price')
+
+
 class ProductsInfoSerializer(serializers.Serializer):
     products = ProductSerializer(many=True)
     count = serializers.IntegerField()

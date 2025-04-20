@@ -21,33 +21,28 @@
 
 2.  **Attempt (and revert) making the nested serializer writable**: Initially, the `read_only=True` constraint was removed from the `OrderItemSerializer` within the `OrderSerializer`. However, this led to issues because the expected input format in the POST request did not match the serializer's structure, and HTML input did not support lists directly.
 
-3.  **Create a dedicated serializer for order creation (`OrderCreateSerializer`)**: A new serializer, `OrderCreateSerializer`, was created to specifically handle the creation of orders and their items.
+3.  **Create a dedicated serializer for order creation (`OrderCreateSerializer`)**:
 
-    ```python
-    class OrderCreateSerializer(serializers.ModelSerializer):
-        items = OrderItemCreateSerializer(many=True)
-        # ... other fields ...
+    - A new serializer, `OrderCreateSerializer`, was created to specifically handle the creation of orders and their items.
+    - **Define a nested serializer for creating order items (`OrderItemCreateSerializer`)**: An inner class `OrderItemCreateSerializer` was created within `OrderCreateSerializer` to define the fields required for creating individual order items (e.g., `product` ID and `quantity`).
 
-        class Meta:
-            model = Order
-            fields = [...]
-            # extra_kwargs for read-only fields
-    ```
+      ```python
+      class OrderCreateSerializer(serializers.ModelSerializer):
+          class OrderItemCreateSerializer(serializers.ModelSerializer):
+              class Meta:
+                  model = OrderItem
+                  fields = ('product', 'quantity')
 
-4.  **Define a nested serializer for creating order items (`OrderItemCreateSerializer`)**: An inner class `OrderItemCreateSerializer` was created within `OrderCreateSerializer` to define the fields required for creating individual order items (e.g., `product` ID and `quantity`).
+          items = OrderItemCreateSerializer(many=True)
 
-    ```python
-    class OrderCreateSerializer(serializers.ModelSerializer):
-        class OrderItemCreateSerializer(serializers.ModelSerializer):
-            class Meta:
-                model = OrderItem
-                fields = ['product', 'quantity']
+          class Meta:
+              model = Order
+              fields = ('user', 'status', 'items', 'total_price')
+      ```
 
-        items = OrderItemCreateSerializer(many=True)
-        # ... other fields ...
-    ```
+---
 
-5.  **Override `get_serializer_class()` in the `OrderViewSet`**: This method was overridden to use the `OrderCreateSerializer` specifically for the `create` action (POST requests).
+4.  **Override `get_serializer_class()` in the `OrderViewSet`**: This method was overridden to use the `OrderCreateSerializer` specifically for the `create` action (POST requests).
 
     ```python
     from .serializers import OrderSerializer, OrderCreateSerializer
@@ -62,7 +57,7 @@
             return super().get_serializer_class()
     ```
 
-6.  **Override the `create()` method in `OrderCreateSerializer`**: The `create()` method was overridden to handle the creation of both the `Order` and its associated `OrderItem`s.
+5.  **Override the `create()` method in `OrderCreateSerializer`**: The `create()` method was overridden to handle the creation of both the `Order` and its associated `OrderItem`s.
 
     ```python
     class OrderCreateSerializer(serializers.ModelSerializer):
@@ -82,7 +77,7 @@
     - The code then iterated through the `order_item_data` and created each `OrderItem`, associating it with the newly created `Order`.
     - Finally, the created `Order` object was returned.
 
-7.  **Add `order_id` to the `OrderCreateSerializer` response**: To include the `order_id` in the response after a successful POST request, a read-only `order_id` field was added to the `OrderCreateSerializer`.
+6.  **Add `order_id` to the `OrderCreateSerializer` response**: To include the `order_id` in the response after a successful POST request, a read-only `order_id` field was added to the `OrderCreateSerializer`.
 
     ```python
     class OrderCreateSerializer(serializers.ModelSerializer):
@@ -96,7 +91,7 @@
             extra_kwargs = {'user': {'read_only': False}} # Temporarily
     ```
 
-8.  **Automatically set the user using `perform_create()`**: To avoid requiring the client to send the `user_id` in the POST request, the `perform_create()` method was overridden in the `OrderViewSet` to automatically set the `user` based on the authenticated user making the request.
+7.  **Automatically set the user using `perform_create()`**: To avoid requiring the client to send the `user_id` in the POST request, the `perform_create()` method was overridden in the `OrderViewSet` to automatically set the `user` based on the authenticated user making the request.
 
     ```python
     class OrderViewSet(viewsets.ModelViewSet):
@@ -112,7 +107,7 @@
             serializer.save(user=self.request.user)
     ```
 
-9.  **Make the `user` field read-only in `OrderCreateSerializer`**: After implementing `perform_create()` to auto-set the user, the `user` field in `OrderCreateSerializer` was made read-only using the `extra_kwargs` in the `Meta` class. This prevents the client from specifying the user during order creation.
+8.  **Make the `user` field read-only in `OrderCreateSerializer`**: After implementing `perform_create()` to auto-set the user, the `user` field in `OrderCreateSerializer` was made read-only using the `extra_kwargs` in the `Meta` class. This prevents the client from specifying the user during order creation.
 
     ```python
     class OrderCreateSerializer(serializers.ModelSerializer):
