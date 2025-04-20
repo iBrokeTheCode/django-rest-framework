@@ -90,9 +90,9 @@
 
     ```python
     class OrderViewSet(viewsets.ModelViewSet):
-        queryset = Order.objects.all()
+        queryset = Order.objects.prefetch_related('items__product')
         serializer_class = OrderSerializer
-        permission_classes = [permissions.AllowAny]
+        permission_classes = (AllowAny,)
         pagination_class = None
     ```
 

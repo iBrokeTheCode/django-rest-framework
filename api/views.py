@@ -76,10 +76,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
     permission_classes = (AllowAny,)
-
-# class OrderListAPIView(generics.ListAPIView):
-#     queryset = Order.objects.prefetch_related('items__product')
-#     serializer_class = OrderSerializer
+    pagination_class = None
 
 
 class UserOrderListAPIView(generics.ListAPIView):
