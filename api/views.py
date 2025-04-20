@@ -10,6 +10,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.pagination import PageNumberPagination
 
+from rest_framework import viewsets
+
 from api.models import Product, Order, OrderItem
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer
 from api.filters import ProductFilter, InStockFilter
@@ -54,9 +56,27 @@ class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return super().get_permissions()
 
 
-class OrderListAPIView(generics.ListAPIView):
+class ProductInfoAPIView(APIView):
+    serializer_class = ProductsInfoSerializer
+
+    def get(self, request):
+        products = Product.objects.all()
+
+        serializer = ProductsInfoSerializer({
+            'products': products,
+            'count': len(products),
+            'max_price': products.aggregate(max_price=Max('price'))['max_price'],
+            'min_price': products.aggregate(min_price=Min('price'))['min_price']
+        })
+
+        return Response(serializer.data)
+
+
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
+    permission_classes = (AllowAny,)
+    pagination_class = None
 
 
 class UserOrderListAPIView(generics.ListAPIView):
@@ -72,19 +92,3 @@ class UserOrderListAPIView(generics.ListAPIView):
 class OrderItemListAPIView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-
-
-class ProductInfoAPIView(APIView):
-    serializer_class = ProductsInfoSerializer
-
-    def get(self, request):
-        products = Product.objects.all()
-
-        serializer = ProductsInfoSerializer({
-            'products': products,
-            'count': len(products),
-            'max_price': products.aggregate(max_price=Max('price'))['max_price'],
-            'min_price': products.aggregate(min_price=Min('price'))['min_price']
-        })
-
-        return Response(serializer.data)

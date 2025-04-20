@@ -95,3 +95,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 19. [API Pagination - Django REST Framework | PageNumberPagination & LimitOffsetPagination](./notes/lesson-19.md) | [Tutorial](https://youtu.be/sTyMe2R9mzk?si=pMuzKtBmz2V1vWkp)
 
     When building APIs, especially those dealing with a large amount of data, returning all records in a single response can lead to performance issues and a poor user experience. Pagination addresses this by dividing the data into smaller, more manageable pages. This lesson explores how to implement pagination in Django REST Framework using two primary methods: PageNumberPagination and LimitOffsetPagination.
+
+20. [Viewsets & Routers in Django REST Framework](./notes/lesson-20.md) | [Tutorial](https://youtu.be/4MrB4IvW6Ow?si=dOk0_IGYxpYprVv3)
+
+    In this lesson, we explore **ViewSets** and **Routers** in Django REST Framework, which are powerful tools for building efficient and well-structured APIs. ViewSets allow you to combine the logic for a set of related views into a single class, while Routers automatically handle the URL configuration for these ViewSets.
