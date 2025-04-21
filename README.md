@@ -131,3 +131,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 28. [API Throttling with Django REST Framework](./notes/lesson-28.md) | [Tutorial](https://youtu.be/95ndK3P9YLI?si=bqxG7Jp00CApRxA4)
 
     This lesson provides an overview of **API throttling** in Django REST Framework, which is the process of **limiting the number of requests that a single user can send to an API over a specific period of time**. Throttling helps to manage API usage, especially for public APIs with different tiers, by preventing overuse. It's similar to permissions in that it determines if a request should be authorized, but unlike permissions, throttling indicates a **temporary state** and controls the **rate of requests**. Django REST Framework offers built-in tools for implementing throttling.
+
+29. [Testing APIs with Django REST Framework](./notes/lesson-29.md) | [Tutorial](https://youtu.be/sRluxnmZ-H8?si=hju51G0WEpm7TAb9)
+
+    This lesson introduces testing tools provided by Django REST Framework to improve support for making API requests and integration with Django REST Framework. It highlights how Django REST Framework extends Django's existing test framework with helper classes.
