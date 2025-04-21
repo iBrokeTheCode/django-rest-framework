@@ -1,6 +1,6 @@
 # Updating Nested Objects in Django REST Framework
 
-## 1. Core Concepts
+## 1. Key Concepts
 
 - In Django REST Framework, when dealing with nested objects, standard ModelSerializers handle creation automatically when you override the `create()` method. However, updating nested objects requires a different approach using the **`update()` method** on the serializer.
 
@@ -26,6 +26,20 @@
         pass
     ```
 
+    Additionally, update the view to use a different serializer when the action is also and update operation.
+
+    ```py
+    # views.py
+    class OrderViewSet(viewsets.ModelViewSet):
+        # ...
+
+        def get_serializer_class(self) -> type:
+            # can also check if POST: if self.request.method == 'POST'
+            if self.action in ('create', 'update'):
+                return OrderCreateSerializer
+            return super().get_serializer_class()
+    ```
+
 2.  **Extract the nested data from the `validated_data`.** Use the `pop()` method to remove the data for the nested objects (e.g., `items` for `OrderItem`) from the `validated_data`. This prevents the main model serializer from trying to handle the nested data directly.
 
     ```python
@@ -41,18 +55,46 @@
 4.  **Handle the nested object updates.** Check if the nested data (`items_data` in this example) exists in the request. If it does, you can implement your desired update logic. The lesson demonstrates clearing existing related objects and creating new ones.
 
     ```python
-    if items_data is not None:
-        # Clear existing related items
+    if order_item_data is not None:
+        # Clear existing items (optional, depends on requirements)
         instance.items.all().delete()
-        # Create new related items
-        for item_data in items_data:
-            OrderItem.objects.create(order=instance, **item_data)
+
+        # Recreate items with the updated data
+        for item in order_item_data:
+            OrderItem.objects.create(order=instance, **item)
     ```
 
 5.  **Return the updated instance.** The `update()` method should return the updated model instance.
 
     ```python
     return instance
+    ```
+
+    The full code would be:
+
+    ```py
+    class OrderCreateSerializer(serializers.ModelSerializer):
+        class OrderItemCreateSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = OrderItem
+                fields = ('product', 'quantity')
+
+        order_id = serializers.UUIDField(read_only=True)
+        items = OrderItemCreateSerializer(many=True)
+
+        def update(self, instance, validated_data):
+            order_item_data = validated_data.pop('items', None)
+            instance = super().update(instance, validated_data)
+
+            if order_item_data is not None:
+                # Clear existing items (optional, depends on requirements)
+                instance.items.all().delete()
+
+                # Recreate items with the updated data
+                for item in order_item_data:
+                    OrderItem.objects.create(order=instance, **item)
+
+            return instance
     ```
 
 6.  **(Optional) Make nested fields optional during updates.** If you want to allow PUT requests without the nested data, you can set `required=False` in the nested serializer definition within your main serializer. This prevents validation errors when the nested data is missing.
