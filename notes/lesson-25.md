@@ -24,35 +24,19 @@
 
 ## 3. Practical Steps:
 
-- **Step 1: Define a `ModelSerializer` subclass.**
+- **Step 1: Define a `ModelSerializer` subclass.**. Then, explicitly set the `fields` attribute in the `Meta` class to a tuple of the desired field names.
 
   ```python
   from rest_framework import serializers
   from .models import User
 
   class UserSerializer(serializers.ModelSerializer):
-      class Meta:
-          model = User
-          # ... (fields or exclude will be defined here)
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'is_staff')
   ```
 
-  This step involves creating a serializer that inherits from `serializers.ModelSerializer` and specifying the associated model in the `Meta` class.
-
-- **Step 2: Explicitly set the `fields` attribute in the `Meta` class to a tuple of the desired field names.**
-
-  ```python
-  from rest_framework import serializers
-  from .models import User
-
-  class UserSerializer(serializers.ModelSerializer):
-      class Meta:
-          model = User
-          fields = ('username', 'email', 'is_staff', 'is_superuser')
-  ```
-
-  This explicitly defines which fields from the `User` model will be included in the serialized output.
-
-- **Step 3 (Not Recommended): Alternatively, you can use `fields = '__all__'` to include all model fields.**
+- **Step 2 (Not Recommended): Alternatively, you can use `fields = '__all__'` to include all model fields.**
 
   ```python
   from rest_framework import serializers
@@ -66,7 +50,7 @@
 
   This will include every field in the `User` model in the serialized output. **However, this is generally discouraged**.
 
-- **Step 4 (Not Recommended): Another alternative is to use the `exclude` attribute with a tuple of field names to omit.**
+- **Step 3 (Not Recommended): Another alternative is to use the `exclude` attribute with a tuple of field names to omit.**
 
   ```python
   from rest_framework import serializers
@@ -80,7 +64,7 @@
 
   This will exclude the specified fields from the serialized output. **This approach also has drawbacks**.
 
-- **Step 5: To include model properties or methods without parameters, add their names to the `fields` tuple.**
+- **Step 4: To include model properties or methods without parameters, add their names to the `fields` tuple.**
 
   ```python
   from rest_framework import serializers
@@ -96,7 +80,7 @@
 
   Note that for model methods, DRF often automatically recognizes them. For properties, you might need to explicitly declare them as a serializer field (as shown with `full_name`) or simply include their name in the `fields` tuple if DRF can resolve them.
 
-- **Step 6: To include related fields (assuming a related name is set in the model), add the related name to the `fields` tuple.**
+- **Step 5: To include related fields (assuming a related name is set in the model), add the related name to the `fields` tuple.**
 
   ```python
   from rest_framework import serializers

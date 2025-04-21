@@ -13,8 +13,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
-from api.models import Product, Order, OrderItem
-from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer, OrderCreateSerializer
+from api.models import Product, Order, OrderItem, User
+from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductsInfoSerializer, OrderCreateSerializer, UserSerializer
 from api.filters import ProductFilter, InStockFilter, OrderFilter
 
 
@@ -112,3 +112,9 @@ class UserOrderListAPIView(generics.ListAPIView):
 class OrderItemListAPIView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
+
+
+class UserListAPIView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = None
