@@ -123,3 +123,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 26. [Caching with Redis and Django!](./notes/lesson-26.md) | [Tutorial](https://youtu.be/5W2Yff00H8s?si=Zou-lPDSkneBRhXu)
 
     This lesson explores techniques for improving the performance of Django APIs by implementing caching with Redis. It covers setting up Redis with Docker, integrating it with Django using the `django-redis` package, caching API responses, and invalidating the cache when underlying data changes.
+
+27. [Django & Redis - Vary Headers to Control Caching Behavior](./notes/lesson-27.md) | [Tutorial](https://youtu.be/iUn8go-XZNw?si=ohkOCdROqHccRYro)
+
+    This lesson explores how to use **`Vary` headers** in a Django application with Redis as the cache backend to control caching behavior based on request headers, specifically focusing on creating per-user caches.
