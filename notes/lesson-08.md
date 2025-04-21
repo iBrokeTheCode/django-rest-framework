@@ -84,7 +84,7 @@
             self.assertTrue(all(order['user'] == user.pk for order in orders))
     ```
 
-    > [!NOTE]
+    > [!INFO]
     > Make sure to add a `name` for your endpoint `path('user-orders/', views.UserOrderListAPIView.as_view(), name='user_orders')` and if you add and `app_name` property, you should call it in the test.
 
 5.  **Write a test function to verify denial of access for an unauthenticated user.**
