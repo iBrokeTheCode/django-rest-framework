@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from api.models import Product, Order, OrderItem
+from api.models import Product, Order, OrderItem, User
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -89,3 +89,9 @@ class ProductsInfoSerializer(serializers.Serializer):
     count = serializers.IntegerField()
     max_price = serializers.FloatField()
     min_price = serializers.FloatField()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'is_staff')

@@ -13,6 +13,7 @@ urlpatterns = [
     # path('orders/', views.OrderListAPIView.as_view()),
     path('user-orders/', views.UserOrderListAPIView.as_view(), name='user_orders'),
     path('order-items/', views.OrderItemListAPIView.as_view()),
+    path('users/', views.UserListAPIView.as_view())
 ]
 
 router = routers.DefaultRouter()
