@@ -115,3 +115,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 24. [Updating Nested Objects | ModelSerializer update() method in Django REST Framework](./notes/lesson-24.md) - [Tutorial](https://youtu.be/QtkES6O_ed4?si=zqA20iLtHtE62xxm)
 
     This lesson explores how to update nested objects using the `update()` method within Django REST Framework's `ModelSerializer`. It builds upon the concept of writable nested representations introduced through overriding the `create()` method.
+
+25. [ModelSerializer Fields - Best Practices](./notes/lesson-25.md) - [Tutorial](https://youtu.be/NgUARZNOuTY?si=sao5NCXZjihwMLo5)
+
+    This lesson provides an overview of how to specify fields in Django Rest Framework's `ModelSerializer` using the `fields` and `exclude` attributes within the `Meta` class. It discusses different approaches and recommends the best practice for defining serializer fields.
