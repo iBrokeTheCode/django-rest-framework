@@ -111,14 +111,20 @@
     from django.db import transaction
 
     def update(self, instance, validated_data):
-        items_data = validated_data.pop('items', None)
+        order_item_data = validated_data.pop('items', None)
+
         with transaction.atomic():
             instance = super().update(instance, validated_data)
-            if items_data is not None:
+
+            if order_item_data is not None:
+                # Clear existing items (optional, depends on requirements)
                 instance.items.all().delete()
-                for item_data in items_data:
-                    OrderItem.objects.create(order=instance, **item_data)
-            return instance
+
+                # Recreate items with the updated data
+                for item in order_item_data:
+                    OrderItem.objects.create(order=instance, **item)
+
+        return instance
     ```
 
 8.  **Configure the viewset to use the serializer with the `update()` method for PUT requests.** In your viewset's `get_serializer_class` method, specify the serializer containing the overridden `update()` method for the 'create' and 'update' actions.
