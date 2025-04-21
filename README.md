@@ -127,3 +127,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 27. [Django & Redis - Vary Headers to Control Caching Behavior](./notes/lesson-27.md) | [Tutorial](https://youtu.be/iUn8go-XZNw?si=ohkOCdROqHccRYro)
 
     This lesson explores how to use **`Vary` headers** in a Django application with Redis as the cache backend to control caching behavior based on request headers, specifically focusing on creating per-user caches.
+
+28. [API Throttling with Django REST Framework](./notes/lesson-28.md) | [Tutorial](https://youtu.be/95ndK3P9YLI?si=bqxG7Jp00CApRxA4)
+
+    This lesson provides an overview of **API throttling** in Django REST Framework, which is the process of **limiting the number of requests that a single user can send to an API over a specific period of time**. Throttling helps to manage API usage, especially for public APIs with different tiers, by preventing overuse. It's similar to permissions in that it determines if a request should be authorized, but unlike permissions, throttling indicates a **temporary state** and controls the **rate of requests**. Django REST Framework offers built-in tools for implementing throttling.
