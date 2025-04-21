@@ -26,7 +26,7 @@
         pass
     ```
 
-    Additionally, update the view to use a different serializer when the action is also and update operation.
+    **Configure the viewset to use the serializer with the `update()` method for PUT requests.** In your viewset's `get_serializer_class` method, specify the serializer containing the overridden `update()` method for the 'create' and 'update' actions.
 
     ```py
     # views.py
@@ -125,13 +125,4 @@
                     OrderItem.objects.create(order=instance, **item)
 
         return instance
-    ```
-
-8.  **Configure the viewset to use the serializer with the `update()` method for PUT requests.** In your viewset's `get_serializer_class` method, specify the serializer containing the overridden `update()` method for the 'create' and 'update' actions.
-
-    ```python
-    def get_serializer_class(self):
-        if self.action in ['create', 'update']:
-            return OrderCreateSerializer
-        return OrderSerializer
     ```
