@@ -22,3 +22,8 @@ class ProductAPITestCase(APITestCase):
         )
         self.url = reverse('api:product_detail', kwargs={
                            'pk': self.product.pk})
+
+    def test_get_product(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['name'], self.product.name)
