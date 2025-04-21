@@ -154,11 +154,13 @@ REST_FRAMEWORK = {
     # THROTTLING
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'api.throttles.BurstRateThrottle',
+        'api.throttles.SustainedRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '2/minute',
-        'user': '1000/day'
+        'burst': '10/minute',
+        'sustained': '15/hour'
     }
 }
 
