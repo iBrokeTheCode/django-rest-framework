@@ -21,6 +21,7 @@
 - [Redis DockerHub](https://hub.docker.com/_/redis)
 - [DRF Caching](https://www.django-rest-framework.org/api-guide/caching/)
 - [django-redis](https://github.com/jazzband/django-redis)
+- [Django Signals - Introduction!](https://youtu.be/8p4M-7VXhAU?si=abr9ABQ0868ZYTGm)
 
 ## 3. Practical Steps
 
@@ -43,7 +44,7 @@
     Install the necessary Python libraries in your virtual environment using pip. The `redis[hiredis]` package includes a faster parser for improved performance.
 
     ```bash
-    pip install redis[hiredis]
+    pip install "redis[hiredis]"
     pip install django-redis
     ```
 
@@ -71,23 +72,30 @@
     from django.utils.decorators import method_decorator
     from django.views.decorators.cache import cache_page
     from rest_framework import generics
-    # or from rest_framework import viewsets
 
-    # For a generic list view
     class ProductListCreateAPIView(generics.ListCreateAPIView):
-        # ...
-        @method_decorator(cache_page(60 * 15, key_prefix="product_list"))
+        queryset = Product.objects.order_by('pk')
+        serializer_class = ProductSerializer
+        filterset_class = ProductFilter
+        filter_backends = (
+            DjangoFilterBackend,
+            filters.SearchFilter,
+            filters.OrderingFilter,
+            InStockFilter
+        )
+        search_fields = ('name', 'description')
+        ordering_fields = ('name', 'price', 'stock')
+        pagination_class = CustomPagination
+
+        @method_decorator(cache_page(60 * 15, key_prefix='product_list'))
         def list(self, request, *args, **kwargs):
             return super().list(request, *args, **kwargs)
-        # ...
 
-    # For a viewset
-    # class ProductViewSet(viewsets.ModelViewSet):
-    #     # ...
-    #     @method_decorator(cache_page(60 * 15, key_prefix="product_list"))
-    #     def list(self, request, *args, **kwargs):
-    #         return super().list(request, *args, **kwargs)
-    #     # ...
+        def get_permissions(self):
+            self.permission_classes = (AllowAny,)
+            if self.request.method == 'POST':
+                self.permission_classes = (IsAdminUser,)
+            return super().get_permissions()
     ```
 
     The `cache_page` decorator takes the cache timeout in seconds (here, 15 minutes) and an optional `key_prefix`. The `key_prefix` helps in identifying and invalidating related cache entries later.
@@ -102,6 +110,7 @@
     class ProductListCreateAPIView(generics.ListCreateAPIView):
         # ...
         def get_queryset(self):
+            import time
             time.sleep(2)
             return super().get_queryset()
         # ...
@@ -110,13 +119,14 @@
     With this, the first request will take 2 seconds, but subsequent requests for the same URL will be served from the cache immediately.
 
 6.  **Implement cache invalidation using Django signals:**
+
     a. **Create a `signals.py` file** within your Django app directory and define a receiver function for the `post_save` and `post_delete` signals of the model you want to track for cache invalidation (e.g., `Product`).
 
     ```python
     from django.db.models.signals import post_save, post_delete
     from django.dispatch import receiver
     from django.core.cache import cache
-    from .models import Product
+    from api.models import Product
 
     @receiver([post_save, post_delete], sender=Product)
     def invalidate_product_cache(sender, instance, **kwargs):
