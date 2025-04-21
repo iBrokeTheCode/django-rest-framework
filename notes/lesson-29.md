@@ -20,8 +20,6 @@
 
 ## 3. Practical Steps
 
-This section outlines the practical steps demonstrated in the lesson for testing a `ProductDetailAPIView` that allows GET requests for anyone but requires an admin user for PUT, PATCH, and DELETE requests.
-
 1.  **Import necessary modules:** In your `tests.py` file, import `reverse` from `django.urls`, your models (e.g., `User`, `Product`), `APIClient`, and `APITestCase` from `rest_framework.test`, and `status` from `rest_framework`.
 
     ```python
@@ -46,17 +44,24 @@ This section outlines the practical steps demonstrated in the lesson for testing
     ```python
     class ProductAPITestCase(APITestCase):
         def setUp(self):
-            self.admin_user = User.objects.create_superuser(username='admin', password='password')
-            self.normal_user = User.objects.create_user(username='user', password='password')
-            self.product = Product.objects.create(name='Test Product', price=10.00)
-            self.url_name = 'product-detail'  # Define the name of the URL
-            self.url = reverse(self.url_name, kwargs={'product_id': self.product.pk})
+            self.admin_user = User.objects.create_superuser(
+                username='admin', password='password', email='')
+            self.normal_user = User.objects.create_user(
+                username='user', password='password', email='')
+            self.product = Product.objects.create(
+                name='Test Product',
+                description='Test Description',
+                price=10.0,
+                stock=100,
+            )
+            self.url = reverse('api:product_detail', kwargs={
+                            'pk': self.product.pk})
     ```
 
 4.  **Define a named URL in `urls.py`:** Ensure the URL you are testing has a `name` parameter. For example:
 
     ```python
-    path('products/<int:product_id>/', views.ProductDetailAPIView.as_view(), name='product-detail'),
+    path('products/<int:product_id>/', views.ProductDetailAPIView.as_view(), name='product_detail'),
     ```
 
 5.  **Write a test for GET requests:** Use `self.client.get(self.url)` to send a GET request to the defined URL and assert the response status code and data.
