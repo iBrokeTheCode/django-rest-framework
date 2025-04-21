@@ -135,3 +135,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 29. [Testing APIs with Django REST Framework](./notes/lesson-29.md) | [Tutorial](https://youtu.be/sRluxnmZ-H8?si=hju51G0WEpm7TAb9)
 
     This lesson introduces testing tools provided by Django REST Framework to improve support for making API requests and integration with Django REST Framework. It highlights how Django REST Framework extends Django's existing test framework with helper classes.
+
+30. [Celery tasks with Django REST Framework!](./notes/lesson-30.md) | [Tutorial](https://youtu.be/E6HPMk0bKPY?si=Aktb12yoK3pBItmo)
+
+    This lesson provides a concise overview of integrating **Celery** for handling background tasks within a **Django REST Framework** application. The primary focus is on demonstrating how to offload a potentially time-consuming task, such as sending a confirmation email after an order is placed, to a background worker. This approach enhances the performance of the Django application by allowing it to respond to client requests quickly while Celery processes tasks asynchronously. The lesson also touches upon the fundamental concepts of Celery, its setup within a Django project, and how to trigger Celery tasks from a REST Framework view.
