@@ -93,8 +93,7 @@
         message = f'Your order with ID {order_id} has been received and is being processed.'
         from_email = settings.DEFAULT_FROM_EMAIL
         recipient_list = [user_email]
-        send_mail(subject, message, from_email, recipient_list)
-        return 1 # Indicates success (as per send_mail return value)
+        return send_mail(subject, message, from_email, recipient_list)
     ```
 
     The `@shared_task` decorator registers the `send_order_confirmation_email` function as a Celery task. The function takes the `order_id` and `user_email` as arguments and uses Django's `send_mail` function to send the email.
@@ -122,15 +121,15 @@
 8.  **Run the Django development server**:
     Start your Django development server as usual.
 
-    ```
+    ```shell
     python manage.py runserver
     ```
 
 9.  **Start the Celery worker**:
     Open a new terminal and navigate to your project directory. Run the Celery worker process, specifying the application name (`drf_course`) and the log level.
 
-    ```
-    celery -A drf_course worker -l info
+    ```shell
+    celery -A drf_course worker -loglevel=INFO
     ```
 
     This command starts the Celery worker, which connects to the Redis broker and waits for tasks to be added to the queue.
