@@ -39,24 +39,16 @@ While `Vary` headers solve the issue of serving the wrong cached content to diff
     from django.views.decorators.cache import cache_page
     from rest_framework import viewsets
 
-    class OrderViewSet(viewsets.ReadOnlyModelViewSet):
+    class OrderViewSet(viewsets.ModelViewSet):
         # ...
-        @cache_page(60 * 15, key_prefix='order_list')
-        def list(self, request, *args, **kwargs):
-            # ...
-            return response
+        @method_decorator(cache_page(60 * 15, key_prefix='order_list'))
+            def list(self, request, *args, **kwargs):
+                return super().list(request, *args, **kwargs)
     ```
 
 4.  **Demonstrating the Problem:** After caching the response for user 2, a subsequent request is made with user 1's token. The lesson shows that the cached response for user 2 is incorrectly returned to user 1 because the cache key is only based on the URL `/orders`.
 
-5.  **Importing `@vary_on_headers`:** The `@vary_on_headers` decorator is imported from `rest_framework.decorators` in `views.py`.
-
-    ```python
-    from django.views.decorators.cache import cache_page
-    from rest_framework.decorators import api_view, permission_classes, authentication_classes, renderer_classes, throttle_classes, parser_classes, content_negotiation_class, schema, generator, action, link, format_suffix_patterns, router, urls, metadata, settings, documentation, renderers, parsers, status, exceptions, filters, serializers, validators, viewsets, generics, mixins, views
-    ```
-
-6.  **Applying `@vary_on_headers`:** The `@vary_on_headers('Authorization')` decorator is added to the `list` method of the `OrderViewSet`, along with `@cache_page`.
+5.  **Applying `@vary_on_headers`:** The `@vary_on_headers('Authorization')` decorator is added to the `list` method of the `OrderViewSet`, along with `@cache_page`.
 
     ```python
     from django.views.decorators.cache import cache_page
@@ -68,19 +60,15 @@ While `Vary` headers solve the issue of serving the wrong cached content to diff
         @method_decorator(cache_page(60 * 15, key_prefix='order_list'))
         @method_decorator(vary_on_headers('Authorization'))
         def list(self, request, *args, **kwargs):
-            # ...
-            return response
+            return super().list(request, *args, **kwargs)
     ```
 
-7.  **Flushing the Redis Cache:** The Redis cache is flushed to ensure a clean state for testing. This involves using Docker commands to access the Redis container and execute the `flushdb` command.
+6.  **Flushing the Redis Cache:** The Redis cache is flushed to ensure a clean state for testing. This involves using Docker commands to access the Redis container and execute the `flushdb` command.
 
     ```bash
     docker ps
-    ```
 
-    (Find the Redis container ID)
-
-    ```bash
+    # Find the Redis container ID
     docker exec -it <redis_container_id> bash
     ```
 
@@ -91,7 +79,7 @@ While `Vary` headers solve the issue of serving the wrong cached content to diff
     exit
     ```
 
-8.  **Testing with `@vary_on_headers`:**
+7.  **Testing with `@vary_on_headers`:**
     - A request is sent as user 2. The correct orders for user 2 are returned and cached, with the cache key now taking the `Authorization` header into account.
     - A subsequent request is sent as user 1. The correct orders for user 1 are returned. This time, the cached response for user 2 is not used because the `Authorization` header is different. A new cached response is created for user 1.
 
