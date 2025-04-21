@@ -111,3 +111,7 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 23. [Creating Nested Objects | Overriding serializer create() method in Django REST Framework](./notes/lesson-23.md) | [Tutorial](https://youtu.be/CAq7AKAT7Q0?si=3AVSWuYdpmjfGNkt)
 
     In this lesson, we explore how to handle the creation of related objects when a POST request is made to a Django REST Framework server. The primary focus is on implementing **writable nested representations**, allowing clients to send data for both a main object and its associated nested objects in a single request. The lesson uses the example of creating an `Order` along with its `OrderItem`s.
+
+24. [Updating Nested Objects | ModelSerializer update() method in Django REST Framework](./notes/lesson-24.md) - [Tutorial](https://youtu.be/QtkES6O_ed4?si=zqA20iLtHtE62xxm)
+
+    This lesson explores how to update nested objects using the `update()` method within Django REST Framework's `ModelSerializer`. It builds upon the concept of writable nested representations introduced through overriding the `create()` method.
