@@ -73,8 +73,6 @@
         self.assertEqual(response.json()['name'], self.product.name)
     ```
 
-    Then, run the test with the command `python manage.py test`
-
 6.  **Write tests for unauthorized PUT and DELETE requests:** For requests that require authentication or specific permissions, send the request without proper credentials and assert that the response status code is `HTTP_401_UNAUTHORIZED`.
 
     ```python
@@ -113,5 +111,3 @@
     ```
 
 8.  **Run the tests:** Use the command `python manage.py test` in your terminal to run the test suite.
-
-This lesson emphasizes the benefits of using Django REST Framework's testing utilities for writing effective tests for your API endpoints, especially when dealing with authentication and permissions. It also highlights the convenience of `response.data` for inspecting response content.

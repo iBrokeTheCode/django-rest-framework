@@ -36,3 +36,15 @@ class ProductAPITestCase(APITestCase):
     def test_unauthorized_delete_product(self):
         response = self.client.delete(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_only_admins_can_delete_product(self):
+        self.client.login(username='user', password='password')
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertTrue(Product.objects.filter(pk=self.product.pk).exists())
+
+        self.client.logout()
+        self.client.login(username='admin', password='password')
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Product.objects.filter(pk=self.product.pk).exists())
