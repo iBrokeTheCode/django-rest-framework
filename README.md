@@ -1,24 +1,40 @@
 # Django REST Framework Tutorial
 
-## Credits
-
-> [!NOTE]
-> Material by [BugBytes Channel](https://www.youtube.com/@bugbytes3923) and [tutorial series](https://www.youtube.com/watch?v=6AEvlNgRPNc&list=PL-2EBeDYMIbTLulc9FSoAXhbmXpLq2l5t).
-> Notes generated with [NotebookLM](https://notebooklm.google)
-
-**Prompt**
-
-```txt
-Generate a README file (Markdown format) summarizing the key concepts of the source video. Include the following sections:
-
-Introduction: A brief overview of the video's topic. (don't add numeration for this section)
-1. Core Concepts: Explain the main functionalities and principles discussed.
-2. Practical Steps: Provide a step-by-step guide for the practical application of the concepts in the video. For each step, clearly explain the action and include the corresponding code block (if any) directly after the step description. (not required to put "action" or "code" subtitle)
-
-Refer to the source as "lesson", for example: "In this lesson ..."
-```
-
 ## Table of Contents
+
+1. [Django REST Framework series - Setup and Models](#django-rest-framework-series---setup-and-models)
+2. [Django REST Framework - Serializers & Response objects | Browsable API](#django-rest-framework---serializers--response-objects--browsable-api)
+3. [Django REST Framework - Nested Serializers, SerializerMethodField and Serializer Relations](#django-rest-framework---nested-serializers-serializermethodfield-and-serializer-relations)
+4. [Django REST Framework - Serializer subclasses and Aggregated API data](#django-rest-framework---serializer-subclasses-and-aggregated-api-data)
+5. [django-silk for Profiling and Optimization with Django REST Framework](#django-silk-for-profiling-and-optimization-with-django-rest-framework)
+6. [Django REST Framework - Generic Views | ListAPIView & RetrieveAPIView](#django-rest-framework---generic-views--listapiview--retrieveapiview)
+7. [Django REST Framework - Dynamic Filtering | Overriding get_queryset() method](#django-rest-framework---dynamic-filtering--overriding-get_queryset-method)
+8. [Django REST Framework - Permissions and Testing Permissions](#django-rest-framework---permissions-and-testing-permissions)
+9. [Django REST Framework - APIView class](#django-rest-framework---apiview-class)
+10. [Django REST Framework - Creating Data | ListCreateAPIView and Generic View Internals](#django-rest-framework---creating-data--listcreateapiview-and-generic-view-internals)
+11. [Django REST Framework - Customising permissions in Generic Views | VSCode REST Client extension](#django-rest-framework---customising-permissions-in-generic-views--vscode-rest-client-extension)
+12. [Django REST Framework - JWT Authentication with djangorestframework-simplejwt](#django-rest-framework---jwt-authentication-with-djangorestframework-simplejwt)
+13. [Django REST Framework - Refresh Tokens & JWT Authentication](#django-rest-framework---refresh-tokens--jwt-authentication)
+14. [Django REST Framework - Updating & Deleting data](#django-rest-framework---updating--deleting-data)
+15. [drf-spectacular - Django REST Framework API Documentation](#drf-spectacular---django-rest-framework-api-documentation)
+16. [django-filter and DRF API filtering - Django REST Framework](#django-filter-and-drf-api-filtering---django-rest-framework)
+17. [SearchFilter and OrderingFilter in Django REST Framework](#searchfilter-and-orderingfilter-in-django-rest-framework)
+18. [Writing Filter Backends in Django REST Framework!](#writing-filter-backends-in-django-rest-framework)
+19. [API Pagination - Django REST Framework | PageNumberPagination & LimitOffsetPagination](#api-pagination---django-rest-framework--pagenumberpagination--limitoffsetpagination)
+20. [Viewsets & Routers in Django REST Framework](#viewsets--routers-in-django-rest-framework)
+21. [Viewset Actions, Filtering and Permissions in Django REST Framework](#viewset-actions-filtering-and-permissions-in-django-rest-framework)
+22. [Viewset Permissions | Admin vs. Normal User in Django](#viewset-permissions--admin-vs-normal-user-in-django)
+23. [Creating Nested Objects | Overriding serializer create() method in Django REST Framework](#creating-nested-objects--overriding-serializer-create-method-in-django-rest-framework)
+24. [Updating Nested Objects | ModelSerializer update() method in Django REST Framework](#updating-nested-objects--modelserializer-update-method-in-django-rest-framework)
+25. [ModelSerializer Fields - Best Practices](#modelserializer-fields---best-practices)
+26. [Caching with Redis and Django!](#caching-with-redis-and-django)
+27. [Django & Redis - Vary Headers to Control Caching Behavior](#django--redis---vary-headers-to-control-caching-behavior)
+28. [API Throttling with Django REST Framework](#api-throttling-with-django-rest-framework)
+29. [Testing APIs with Django REST Framework](#testing-apis-with-django-rest-framework)
+30. [Celery tasks with Django REST Framework!](#celery-tasks-with-django-rest-framework)
+31. [djoser - for Django REST API Authentication | JWT and Token Authentication](#djoser---for-django-rest-api-authentication--jwt-and-token-authentication)
+
+## Summary
 
 1.  [Django REST Framework series - Setup and Models](./notes/lesson-01.md) | [Tutorial](https://youtu.be/6AEvlNgRPNc?si=YBnUAiGHIXL3mndx)
 
@@ -139,3 +155,27 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 30. [Celery tasks with Django REST Framework!](./notes/lesson-30.md) | [Tutorial](https://youtu.be/E6HPMk0bKPY?si=Aktb12yoK3pBItmo)
 
     This lesson provides a concise overview of integrating **Celery** for handling background tasks within a **Django REST Framework** application. The primary focus is on demonstrating how to offload a potentially time-consuming task, such as sending a confirmation email after an order is placed, to a background worker. This approach enhances the performance of the Django application by allowing it to respond to client requests quickly while Celery processes tasks asynchronously. The lesson also touches upon the fundamental concepts of Celery, its setup within a Django project, and how to trigger Celery tasks from a REST Framework view.
+
+31. _(PENDING)_ djoser - for Django REST API Authentication | JWT and Token Authentication | [Tutorial](https://youtu.be/QO8UyXWNg-k?si=xBtlJ5MP4C2RWRmg)
+
+    REST implementation of Django authentication system. djoser library provides a set of Django Rest Framework views to handle basic actions such as registration, login, logout, password reset and account activation. It works with custom user model.
+
+    Instead of reusing Django code (e.g. PasswordResetForm), we reimplemented few things to fit better into Single Page App architecture.
+
+## Credits
+
+> [!NOTE]
+> Material by [BugBytes Channel](https://www.youtube.com/@bugbytes3923) and [tutorial series](https://www.youtube.com/watch?v=6AEvlNgRPNc&list=PL-2EBeDYMIbTLulc9FSoAXhbmXpLq2l5t).
+> Notes generated with [NotebookLM](https://notebooklm.google)
+
+**Prompt**
+
+```txt
+Generate a README file (Markdown format) summarizing the key concepts of the source video. Include the following sections:
+
+Introduction: A brief overview of the video's topic. (don't add numeration for this section)
+1. Core Concepts: Explain the main functionalities and principles discussed.
+2. Practical Steps: Provide a step-by-step guide for the practical application of the concepts in the video. For each step, clearly explain the action and include the corresponding code block (if any) directly after the step description. (not required to put "action" or "code" subtitle)
+
+Refer to the source as "lesson", for example: "In this lesson ..."
+```
