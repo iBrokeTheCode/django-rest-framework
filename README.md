@@ -112,10 +112,14 @@ Refer to the source as "lesson", for example: "In this lesson ..."
 
     In this lesson, we explore how to handle the creation of related objects when a POST request is made to a Django REST Framework server. The primary focus is on implementing **writable nested representations**, allowing clients to send data for both a main object and its associated nested objects in a single request. The lesson uses the example of creating an `Order` along with its `OrderItem`s.
 
-24. [Updating Nested Objects | ModelSerializer update() method in Django REST Framework](./notes/lesson-24.md) - [Tutorial](https://youtu.be/QtkES6O_ed4?si=zqA20iLtHtE62xxm)
+24. [Updating Nested Objects | ModelSerializer update() method in Django REST Framework](./notes/lesson-24.md) | [Tutorial](https://youtu.be/QtkES6O_ed4?si=zqA20iLtHtE62xxm)
 
     This lesson explores how to update nested objects using the `update()` method within Django REST Framework's `ModelSerializer`. It builds upon the concept of writable nested representations introduced through overriding the `create()` method.
 
-25. [ModelSerializer Fields - Best Practices](./notes/lesson-25.md) - [Tutorial](https://youtu.be/NgUARZNOuTY?si=sao5NCXZjihwMLo5)
+25. [ModelSerializer Fields - Best Practices](./notes/lesson-25.md) | [Tutorial](https://youtu.be/NgUARZNOuTY?si=sao5NCXZjihwMLo5)
 
     This lesson provides an overview of how to specify fields in Django Rest Framework's `ModelSerializer` using the `fields` and `exclude` attributes within the `Meta` class. It discusses different approaches and recommends the best practice for defining serializer fields.
+
+26. [Caching with Redis and Django!](./notes/lesson-26.md) | [Tutorial](https://youtu.be/5W2Yff00H8s?si=Zou-lPDSkneBRhXu)
+
+    This lesson explores techniques for improving the performance of Django APIs by implementing caching with Redis. It covers setting up Redis with Docker, integrating it with Django using the `django-redis` package, caching API responses, and invalidating the cache when underlying data changes.
