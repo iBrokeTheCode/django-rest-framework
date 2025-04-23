@@ -155,7 +155,9 @@
 
     This lesson provides a concise overview of integrating **Celery** for handling background tasks within a **Django REST Framework** application. The primary focus is on demonstrating how to offload a potentially time-consuming task, such as sending a confirmation email after an order is placed, to a background worker. This approach enhances the performance of the Django application by allowing it to respond to client requests quickly while Celery processes tasks asynchronously. The lesson also touches upon the fundamental concepts of Celery, its setup within a Django project, and how to trigger Celery tasks from a REST Framework view.
 
-31. _(PENDING)_ djoser - for Django REST API Authentication | JWT and Token Authentication | [Tutorial](https://youtu.be/QO8UyXWNg-k?si=xBtlJ5MP4C2RWRmg)
+**Pending**
+
+31. djoser - for Django REST API Authentication | JWT and Token Authentication | [Tutorial](https://youtu.be/QO8UyXWNg-k?si=xBtlJ5MP4C2RWRmg)
 
     REST implementation of Django authentication system. djoser library provides a set of Django Rest Framework views to handle basic actions such as registration, login, logout, password reset and account activation. It works with custom user model.
 
