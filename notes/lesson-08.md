@@ -55,8 +55,6 @@
             self.user1 = User.objects.create_user(username='user1', password='password1')
             self.user2 = User.objects.create_user(username='user2', password='password2')
             Order.objects.create(user=self.user1)
-            Order.objects.create(user=self.user1)
-            Order.objects.create(user=self.user2)
             Order.objects.create(user=self.user2)
     ```
 
@@ -84,8 +82,8 @@
             self.assertTrue(all(order['user'] == user.pk for order in orders))
     ```
 
-    > [!NOTE]
-    > Make sure to add a `name` for your endpoint `path('user-orders/', views.UserOrderListAPIView.as_view(), name='user_orders')` and if you add and `app_name` property, you should call it in the test.
+> [!NOTE]  
+> Make sure to add a `name` for your endpoint `path('user-orders/', views.UserOrderListAPIView.as_view(), name='user_orders')` and if you add and `app_name` property, you should call it in the test.
 
 5.  **Write a test function to verify denial of access for an unauthenticated user.**
     Send a GET request to the protected endpoint without logging in any user and assert that the response status code is `HTTP_403_FORBIDDEN` (using `status` from `rest_framework`).
