@@ -24,6 +24,17 @@
     from rest_framework import permissions
     ```
 
+    Also can provide a default permission classes in `settings.py`
+
+    ```py
+    REST_FRAMEWORK = {
+        # Other settings...
+        "DEFAULT_PERMISSION_CLASSES": [
+            "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        ],
+    }
+    ```
+
 2.  **Add the `permission_classes` attribute to your view** and set it to a list containing the desired permission classes. For example, to require authentication for the `UserOrderListAPIView`:
 
     ```python
