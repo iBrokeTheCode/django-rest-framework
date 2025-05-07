@@ -28,6 +28,12 @@
     }
     ```
 
+    ```shell
+    curl -X POST -i http://127.0.0.1:8000/api/token/ \
+    -H 'Content-Type: application/json' \
+    -d '{"username": "your_user", "password": "your_code"}'
+    ```
+
     Upon successful authentication, the response will contain an `access` token and a `refresh` token.
 
     ```json
@@ -50,6 +56,10 @@
     {
         "refresh": "your_refresh_token"
     }
+    ```
+
+    ```shell
+    curl -i -X POST -H 'Content-Type: application/json' -d '{"refresh": "your-refresh-token"}' http://127.0.0.1:8000/api/token/refresh/
     ```
 
     The response will contain a new `access` token.
