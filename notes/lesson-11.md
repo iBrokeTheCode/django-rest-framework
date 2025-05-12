@@ -21,6 +21,17 @@
 
 ## 3. Practical Steps
 
+To configure a global default permission, you can add the following code in your `settings.py` file.
+
+```py
+# settings.py
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+}
+```
+
 1.  **Identify the API view requiring different permissions for different request methods.**
     In this lesson, the target is the `ProductListCreateAPIView`. It should allow anyone to retrieve the list of products (GET request) but restrict the creation of new products (POST request) to admin users only.
 
